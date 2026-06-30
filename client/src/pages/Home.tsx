@@ -1,10 +1,20 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, MapPin, Phone, MessageCircle, ExternalLink, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Phone, MessageCircle, ExternalLink, Moon, Sun, Globe } from 'lucide-react';
 
 export default function Home() {
   const [lang, setLang] = useState('pt');
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [expandedAccordion, setExpandedAccordion] = useState<string | null>(null);
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Persist dark mode preference
+  useEffect(() => {
+    const saved = localStorage.getItem('darkMode');
+    if (saved) setDarkMode(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
+  }, [darkMode]);
 
   const slides = [
     { id: 1, title: 'Fachada da Casa', placeholder: true },
@@ -13,6 +23,30 @@ export default function Home() {
     { id: 4, title: 'Praça do Caranguejo', placeholder: true },
     { id: 5, title: 'Café Regional', placeholder: true },
   ];
+
+  // Data structure with links
+  const establishments = {
+    pharmacies: [
+      { pt: 'Drogasil', en: 'Drogasil', es: 'Drogasil', emoji: '💊', whatsapp: '', maps: '', site: '' },
+      { pt: 'Drogaria Santo Remédio', en: 'Pharmacy Santo Remedy', es: 'Farmacia Santo Remedio', emoji: '💊', whatsapp: '', maps: '', site: '' },
+    ],
+    food: [
+      { pt: 'Praça do Caranguejo', en: 'Crab Square', es: 'Plaza del Cangrejo', emoji: '🦀', whatsapp: '', maps: '', site: '' },
+      { pt: 'Assados Hango', en: 'Hango Grilled Meats', es: 'Asados Hango', emoji: '🍖', whatsapp: '', maps: '', site: '' },
+      { pt: 'Banca de Café Regional', en: 'Regional Coffee Stand', es: 'Puesto de Café Regional', emoji: '☕', whatsapp: '', maps: '', site: '' },
+    ],
+    attractions: [
+      { pt: 'Teatro Amazonas', en: 'Amazon Theater', es: 'Teatro Amazonas', emoji: '🎭', whatsapp: '', maps: '', site: '', info_pt: 'Ingressos online', info_en: 'Online tickets' },
+      { pt: 'MUSA - Museu da Amazônia', en: 'MUSA - Amazon Museum', es: 'MUSA - Museo Amazónico', emoji: '🌳', whatsapp: '', maps: '', site: '', info_pt: 'Entrada paga', info_en: 'Paid entry' },
+      { pt: 'Encontro das Águas', en: 'Meeting of Waters', es: 'Encuentro de Aguas', emoji: '💧', whatsapp: '', maps: '', site: '', info_pt: 'Tours disponíveis', info_en: 'Tours available' },
+      { pt: 'Ponta Negra', en: 'Ponta Negra Beach', es: 'Playa Ponta Negra', emoji: '🏖️', whatsapp: '', maps: '', site: '', info_pt: 'Acesso livre', info_en: 'Free access' },
+    ],
+    transport: [
+      { pt: 'Uber / 99', en: 'Uber / 99', es: 'Uber / 99', emoji: '🚕', whatsapp: '', maps: '', site: '', info_pt: 'Apps disponíveis', info_en: 'Apps available' },
+      { pt: 'Aeroporto Eduardo Gomes', en: 'Eduardo Gomes Airport', es: 'Aeropuerto Eduardo Gomes', emoji: '✈️', whatsapp: '', maps: '', site: '', info_pt: '~25 min de Uber', info_en: '~25 min by Uber' },
+      { pt: 'Locação de Carros', en: 'Car Rental', es: 'Alquiler de Autos', emoji: '🚙', whatsapp: '', maps: '', site: '', info_pt: 'Localiza, Movida, Unidas', info_en: 'Localiza, Movida, Unidas' },
+    ],
+  };
 
   const content = {
     pt: {
@@ -32,9 +66,14 @@ export default function Home() {
       directCTA: 'Reserva Direta',
       sections: {
         house: { title: 'A Casa & Você', rules: ['Papel higiénico no cesto, não no vaso', 'Restos de comida no lixo', 'Manaus é quente — roupas leves', 'Protetor solar indispensável', 'Repelente para passeios'] },
-        pharmacies: { title: 'Farmácias 24h', items: ['Drogasil', 'Drogaria Santo Remédio'] },
-        food: { title: 'Gastronomia Amazônica', items: ['Praça do Caranguejo', 'Assados Hango', 'Banca de Café Regional'] },
+        pharmacies: { title: 'Farmácias 24h' },
+        food: { title: 'Gastronomia Amazônica' },
+        attractions: { title: 'Pontos Turísticos' },
+        transport: { title: 'Transporte' },
+        location: { title: 'Localização' },
       },
+      buttons: { whatsapp: 'WhatsApp', maps: 'Mapa', site: 'Site', discover: 'Descobrir', call: 'Ligar' },
+      footer: { credit: 'Guia Digital criado pelo', hub: 'Hub Encontro d\'Água', smartCard: 'Conheça nossos serviços' },
     },
     en: {
       eyebrow: '🌿 Airbnb & Stays in Manaus, Amazonas',
@@ -53,9 +92,14 @@ export default function Home() {
       directCTA: 'Direct Booking',
       sections: {
         house: { title: 'The House & You', rules: ['Toilet paper in the bin, not the toilet', 'Food scraps in the trash', 'Manaus is hot — wear light clothes', 'Sunscreen is essential', 'Repellent for outdoor activities'] },
-        pharmacies: { title: '24h Pharmacies', items: ['Drogasil', 'Drogaria Santo Remédio'] },
-        food: { title: 'Amazonian Gastronomy', items: ['Crab Square', 'Assados Hango', 'Regional Coffee Stand'] },
+        pharmacies: { title: '24h Pharmacies' },
+        food: { title: 'Amazonian Gastronomy' },
+        attractions: { title: 'Tourist Attractions' },
+        transport: { title: 'Transportation' },
+        location: { title: 'Location' },
       },
+      buttons: { whatsapp: 'WhatsApp', maps: 'Map', site: 'Website', discover: 'Discover', call: 'Call' },
+      footer: { credit: 'Digital Guide created by', hub: 'Hub Encontro d\'Água', smartCard: 'Discover our services' },
     },
     es: {
       eyebrow: '🌿 Airbnb & Estadías en Manaos, Amazonas',
@@ -74,9 +118,14 @@ export default function Home() {
       directCTA: 'Reserva Directa',
       sections: {
         house: { title: 'La Casa & Tú', rules: ['Papel higiénico en la papelera, no en el inodoro', 'Restos de comida en la basura', 'Manaos es calurosa — ropa ligera', 'Protector solar indispensable', 'Repelente para actividades al aire libre'] },
-        pharmacies: { title: 'Farmacias 24h', items: ['Drogasil', 'Drogaria Santo Remédio'] },
-        food: { title: 'Gastronomía Amazónica', items: ['Plaza del Cangrejo', 'Assados Hango', 'Puesto de Café Regional'] },
+        pharmacies: { title: 'Farmacias 24h' },
+        food: { title: 'Gastronomía Amazónica' },
+        attractions: { title: 'Atracciones Turísticas' },
+        transport: { title: 'Transporte' },
+        location: { title: 'Ubicación' },
       },
+      buttons: { whatsapp: 'WhatsApp', maps: 'Mapa', site: 'Sitio', discover: 'Descubrir', call: 'Llamar' },
+      footer: { credit: 'Guía Digital creada por', hub: 'Hub Encontro d\'Água', smartCard: 'Descubre nuestros servicios' },
     },
   };
 
@@ -85,106 +134,98 @@ export default function Home() {
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
-  const toggleAccordion = (id: string) => {
-    setExpandedAccordion(expandedAccordion === id ? null : id);
-  };
+  // Button rendering component
+  const renderButtons = (item: any) => (
+    <div className="flex flex-wrap gap-2 mt-3">
+      {item.whatsapp && (
+        <a href={`https://wa.me/${item.whatsapp.replace(/\D/g, '')}`} className="text-xs bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-all flex items-center gap-1">
+          <MessageCircle className="w-3 h-3" /> {t.buttons.whatsapp}
+        </a>
+      )}
+      {item.maps && (
+        <a href={item.maps} target="_blank" rel="noopener noreferrer" className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition-all flex items-center gap-1">
+          <MapPin className="w-3 h-3" /> {t.buttons.maps}
+        </a>
+      )}
+      {item.site && (
+        <a href={item.site} target="_blank" rel="noopener noreferrer" className="text-xs bg-purple-500 text-white px-3 py-1 rounded-full hover:bg-purple-600 transition-all flex items-center gap-1">
+          <Globe className="w-3 h-3" /> {t.buttons.site}
+        </a>
+      )}
+      {!item.whatsapp && !item.maps && !item.site && (
+        <a href={`https://www.google.com/maps/search/${lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}+Manaus`} target="_blank" rel="noopener noreferrer" className="text-xs bg-gray-500 text-white px-3 py-1 rounded-full hover:bg-gray-600 transition-all flex items-center gap-1">
+          <MapPin className="w-3 h-3" /> {t.buttons.discover}
+        </a>
+      )}
+    </div>
+  );
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Language Bar */}
-      <div className="sticky top-0 z-50 bg-white border-b border-gray-200 py-3">
-        <div className="max-w-6xl mx-auto px-4 flex justify-center gap-3">
-          {['pt', 'en', 'es'].map((l) => (
-            <button
-              key={l}
-              onClick={() => setLang(l)}
-              className={`px-6 py-2 rounded-full font-semibold transition-all ${
-                lang === l
-                  ? 'bg-teal-700 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {l === 'pt' ? '🇧🇷 PT' : l === 'en' ? '🇺🇸 EN' : '🇪🇸 ES'}
-            </button>
-          ))}
+    <div className={`min-h-screen transition-colors ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
+      {/* Language & Theme Bar */}
+      <div className={`sticky top-0 z-50 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b py-3 transition-colors`}>
+        <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
+          <div className="flex justify-center gap-2 flex-1">
+            {['pt', 'en', 'es'].map((l) => (
+              <button key={l} onClick={() => setLang(l)} className={`px-4 py-2 rounded-full font-semibold transition-all text-sm ${lang === l ? 'bg-teal-700 text-white' : darkMode ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                {l === 'pt' ? '🇧🇷 PT' : l === 'en' ? '🇺🇸 EN' : '🇪🇸 ES'}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-full transition-all ${darkMode ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </button>
         </div>
       </div>
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-teal-50 to-white py-12">
+      <section className={`${darkMode ? 'bg-gradient-to-b from-gray-800 to-gray-900' : 'bg-gradient-to-b from-teal-50 to-white'} py-8 md:py-12 transition-colors`}>
         <div className="max-w-6xl mx-auto px-4">
           {/* Slideshow */}
-          <div className="relative mb-12 rounded-lg overflow-hidden bg-gray-200 h-80 flex items-center justify-center">
-            <div className="w-full h-full bg-gradient-to-br from-teal-100 to-teal-50 flex items-center justify-center">
-              <div className="text-center">
-                <p className="text-gray-500 text-lg">📸 {slides[currentSlide].title}</p>
-                <p className="text-gray-400 text-sm mt-2">[Placeholder Image {currentSlide + 1}/5]</p>
-              </div>
+          <div className="relative mb-8 md:mb-12 rounded-lg overflow-hidden h-64 md:h-80 flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50 dark:from-gray-700 dark:to-gray-600">
+            <div className="text-center">
+              <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>📸 {slides[currentSlide].title}</p>
+              <p className={`text-sm mt-2 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>[Placeholder Image {currentSlide + 1}/5]</p>
             </div>
-            {/* Navigation */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full transition-all"
-            >
-              <ChevronLeft className="w-6 h-6 text-gray-800" />
+            <button onClick={prevSlide} className={`absolute left-3 md:left-4 top-1/2 -translate-y-1/2 ${darkMode ? 'bg-gray-700/80 hover:bg-gray-600' : 'bg-white/80 hover:bg-white'} p-2 rounded-full transition-all`}>
+              <ChevronLeft className={`w-5 h-5 md:w-6 md:h-6 ${darkMode ? 'text-white' : 'text-gray-800'}`} />
             </button>
-            <button
-              onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full transition-all"
-            >
-              <ChevronRight className="w-6 h-6 text-gray-800" />
+            <button onClick={nextSlide} className={`absolute right-3 md:right-4 top-1/2 -translate-y-1/2 ${darkMode ? 'bg-gray-700/80 hover:bg-gray-600' : 'bg-white/80 hover:bg-white'} p-2 rounded-full transition-all`}>
+              <ChevronRight className={`w-5 h-5 md:w-6 md:h-6 ${darkMode ? 'text-white' : 'text-gray-800'}`} />
             </button>
-            {/* Dots */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
               {slides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    idx === currentSlide ? 'bg-teal-700 w-6' : 'bg-white/60'
-                  }`}
-                />
+                <button key={idx} onClick={() => setCurrentSlide(idx)} className={`w-2 h-2 rounded-full transition-all ${idx === currentSlide ? 'bg-teal-700 w-6' : darkMode ? 'bg-gray-500/60' : 'bg-white/60'}`} />
               ))}
             </div>
           </div>
 
           {/* Pitch Block */}
-          <div className="mb-12">
+          <div className="mb-8 md:mb-12">
             <p className="text-sm font-semibold text-teal-700 mb-2">{t.eyebrow}</p>
-            <h1 className="text-5xl font-bold text-gray-900 mb-4">{t.title}</h1>
-            <p className="text-xl text-gray-700 mb-6 leading-relaxed max-w-2xl">{t.pitch}</p>
-            {/* Chips */}
-            <div className="flex flex-wrap gap-3 mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.title}</h1>
+            <p className="text-lg md:text-xl mb-6 leading-relaxed max-w-2xl">{t.pitch}</p>
+            <div className="flex flex-wrap gap-2 md:gap-3 mb-8">
               {t.chips.map((chip, idx) => (
-                <div
-                  key={idx}
-                  className="bg-gray-100 px-4 py-2 rounded-full text-sm font-medium text-gray-800 flex items-center gap-2"
-                >
+                <div key={idx} className={`${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-100 text-gray-800'} px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium flex items-center gap-2`}>
                   <span>{chip.emoji}</span>
                   <span>{chip.text}</span>
                 </div>
               ))}
             </div>
+
             {/* Host Strip */}
-            <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 flex items-center justify-between">
+            <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-teal-50 border-teal-200'} border rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-colors`}>
               <div>
-                <p className="text-sm text-gray-600">Anfitriã</p>
-                <p className="text-lg font-semibold text-gray-900">{t.hostName}</p>
+                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Anfitriã</p>
+                <p className="text-lg font-semibold">{t.hostName}</p>
               </div>
-              <div className="flex gap-2">
-                <a
-                  href={`tel:${t.hostWhatsApp.replace(/\D/g, '')}`}
-                  className="bg-white text-teal-700 px-4 py-2 rounded-lg font-medium hover:bg-teal-50 transition-all flex items-center gap-2"
-                >
-                  <Phone className="w-4 h-4" />
-                  Ligar
+              <div className="flex gap-2 flex-wrap">
+                <a href={`tel:${t.hostWhatsApp.replace(/\D/g, '')}`} className={`${darkMode ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-white text-teal-700 hover:bg-teal-50'} px-3 md:px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 text-sm`}>
+                  <Phone className="w-4 h-4" /> {t.buttons.call}
                 </a>
-                <a
-                  href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`}
-                  className="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all flex items-center gap-2"
-                >
-                  <MessageCircle className="w-4 h-4" />
-                  WhatsApp
+                <a href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`} className="bg-green-500 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all flex items-center gap-2 text-sm">
+                  <MessageCircle className="w-4 h-4" /> {t.buttons.whatsapp}
                 </a>
               </div>
             </div>
@@ -193,21 +234,15 @@ export default function Home() {
       </section>
 
       {/* Booking Banner */}
-      <section className="bg-red-500 text-white py-8">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-lg font-semibold">Pronto para sua próxima aventura em Manaus?</p>
-          <div className="flex gap-3">
-            <a
-              href="https://airbnb.com.br/rooms/1703136467602003248"
-              className="bg-white text-red-500 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all flex items-center gap-2"
-            >
+      <section className="bg-red-500 text-white py-6 md:py-8">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-base md:text-lg font-semibold text-center md:text-left">Pronto para sua próxima aventura em Manaus?</p>
+          <div className="flex gap-3 flex-wrap justify-center md:justify-end">
+            <a href="https://airbnb.com.br/rooms/1703136467602003248" className="bg-white text-red-500 px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all flex items-center gap-2 text-sm md:text-base">
               {t.bookingCTA}
               <ExternalLink className="w-4 h-4" />
             </a>
-            <a
-              href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`}
-              className="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all flex items-center gap-2"
-            >
+            <a href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`} className="bg-green-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-green-600 transition-all flex items-center gap-2 text-sm md:text-base">
               {t.directCTA}
               <MessageCircle className="w-4 h-4" />
             </a>
@@ -216,14 +251,14 @@ export default function Home() {
       </section>
 
       {/* Sections */}
-      <section className="max-w-6xl mx-auto px-4 py-16">
-        {/* House Rules Accordion */}
+      <section className={`max-w-6xl mx-auto px-4 py-12 md:py-16 transition-colors`}>
+        {/* House Rules */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">{t.sections.house.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.house.title}</h2>
           <div className="space-y-2">
             {t.sections.house.rules.map((rule, idx) => (
-              <div key={idx} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                <p className="text-gray-800 font-medium">✓ {rule}</p>
+              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border rounded-lg p-4 transition-colors`}>
+                <p className="font-medium">✓ {rule}</p>
               </div>
             ))}
           </div>
@@ -231,12 +266,13 @@ export default function Home() {
 
         {/* Pharmacies */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">{t.sections.pharmacies.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.pharmacies.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {t.sections.pharmacies.items.map((item, idx) => (
-              <div key={idx} className="bg-teal-50 border border-teal-200 rounded-lg p-6">
-                <p className="text-lg font-semibold text-gray-900">{item}</p>
-                <p className="text-sm text-gray-600 mt-2">Delivery 24h disponível</p>
+            {establishments.pharmacies.map((item, idx) => (
+              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-teal-50 border-teal-200'} border rounded-lg p-6 transition-colors`}>
+                <p className="text-lg font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
+                <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Delivery 24h disponível</p>
+                {renderButtons(item)}
               </div>
             ))}
           </div>
@@ -244,12 +280,13 @@ export default function Home() {
 
         {/* Food */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">{t.sections.food.title}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.food.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {t.sections.food.items.map((item, idx) => (
-              <div key={idx} className="bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6">
-                <p className="text-lg font-semibold text-gray-900">🍽️ {item}</p>
-                <p className="text-sm text-gray-600 mt-2">Imperdível no Eldorado</p>
+            {establishments.food.map((item, idx) => (
+              <div key={idx} className={`${darkMode ? 'bg-gradient-to-br from-gray-800 to-gray-700 border-gray-700' : 'bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200'} border rounded-lg p-6 transition-colors`}>
+                <p className="text-lg font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
+                <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Imperdível no Eldorado</p>
+                {renderButtons(item)}
               </div>
             ))}
           </div>
@@ -257,42 +294,28 @@ export default function Home() {
 
         {/* Map Section */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 flex items-center gap-2">
             <MapPin className="w-8 h-8 text-teal-700" />
-            {lang === 'pt' ? 'Localização' : lang === 'en' ? 'Location' : 'Ubicación'}
+            {t.sections.location.title}
           </h2>
-          <div className="bg-gray-100 rounded-lg overflow-hidden h-96 flex items-center justify-center">
+          <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-100 border-gray-200'} border rounded-lg overflow-hidden h-80 md:h-96 flex items-center justify-center transition-colors`}>
             <div className="text-center">
               <MapPin className="w-12 h-12 text-teal-700 mx-auto mb-4" />
-              <p className="text-gray-600 font-medium">
-                {lang === 'pt' ? 'Mapa do Eldorado' : lang === 'en' ? 'Eldorado Map' : 'Mapa del Eldorado'}
-              </p>
-              <p className="text-gray-500 text-sm mt-2">
-                {lang === 'pt' ? 'Bairro Eldorado, Manaus - AM' : lang === 'en' ? 'Eldorado District, Manaus - AM' : 'Barrio Eldorado, Manaos - AM'}
-              </p>
+              <p className={`font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Mapa do Eldorado</p>
+              <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Bairro Eldorado, Manaus - AM</p>
             </div>
           </div>
         </div>
 
         {/* Tourist Attractions */}
         <div className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            {lang === 'pt' ? '🎭 Pontos Turísticos' : lang === 'en' ? '🎭 Tourist Attractions' : '🎭 Atracciones Turísticas'}
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">🎭 {t.sections.attractions.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { pt: 'Teatro Amazonas', en: 'Amazon Theater', es: 'Teatro Amazonas', emoji: '🎭' },
-              { pt: 'MUSA - Museu da Amazônia', en: 'MUSA - Amazon Museum', es: 'MUSA - Museo de la Amazonia', emoji: '🌳' },
-              { pt: 'Encontro das Águas', en: 'Meeting of Waters', es: 'Encuentro de Aguas', emoji: '💧' },
-              { pt: 'Ponta Negra', en: 'Ponta Negra Beach', es: 'Playa Ponta Negra', emoji: '🏖️' },
-            ].map((attraction, idx) => (
-              <div key={idx} className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                <p className="text-2xl font-semibold text-gray-900">
-                  {attraction.emoji} {lang === 'pt' ? attraction.pt : lang === 'en' ? attraction.en : attraction.es}
-                </p>
-                <p className="text-sm text-gray-600 mt-2">
-                  {lang === 'pt' ? 'A poucos minutos de distância' : lang === 'en' ? 'Just minutes away' : 'A pocos minutos de distancia'}
-                </p>
+            {establishments.attractions.map((item, idx) => (
+              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-blue-50 border-blue-200'} border rounded-lg p-6 transition-colors`}>
+                <p className="text-2xl font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
+                <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? item.info_pt : item.info_en}</p>
+                {renderButtons(item)}
               </div>
             ))}
           </div>
@@ -300,20 +323,13 @@ export default function Home() {
 
         {/* Transport */}
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            {lang === 'pt' ? '🚗 Transporte' : lang === 'en' ? '🚗 Transportation' : '🚗 Transporte'}
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">🚗 {t.sections.transport.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { pt: 'Uber / 99', en: 'Uber / 99', es: 'Uber / 99', emoji: '🚕', desc: 'Funciona muito bem em Manaus' },
-              { pt: 'Aeroporto Eduardo Gomes', en: 'Eduardo Gomes Airport', es: 'Aeropuerto Eduardo Gomes', emoji: '✈️', desc: '~25 min de Uber' },
-              { pt: 'Locação de Carros', en: 'Car Rental', es: 'Alquiler de Autos', emoji: '🚙', desc: 'Localiza, Movida, Unidas' },
-            ].map((transport, idx) => (
-              <div key={idx} className="bg-purple-50 border border-purple-200 rounded-lg p-6">
-                <p className="text-2xl font-semibold text-gray-900">
-                  {transport.emoji} {lang === 'pt' ? transport.pt : lang === 'en' ? transport.en : transport.es}
-                </p>
-                <p className="text-sm text-gray-600 mt-2">{transport.desc}</p>
+            {establishments.transport.map((item, idx) => (
+              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-purple-50 border-purple-200'} border rounded-lg p-6 transition-colors`}>
+                <p className="text-2xl font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
+                <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? item.info_pt : item.info_en}</p>
+                {renderButtons(item)}
               </div>
             ))}
           </div>
@@ -321,24 +337,24 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-900'} text-white py-12 border-t transition-colors`}>
         <div className="max-w-6xl mx-auto px-4 text-center">
           <p className="text-lg font-semibold mb-4">Casa da Graça — Seu refúgio em Manaus</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-            <a
-              href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`}
-              className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-600 transition-all"
-            >
-              WhatsApp
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+            <a href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`} className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-600 transition-all">
+              {t.buttons.whatsapp}
             </a>
-            <a
-              href="https://airbnb.com.br/rooms/1703136467602003248"
-              className="bg-red-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 transition-all"
-            >
+            <a href="https://airbnb.com.br/rooms/1703136467602003248" className="bg-red-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 transition-all">
               Airbnb
             </a>
           </div>
-          <p className="text-gray-400 text-sm">© 2026 Casa da Graça — Manaus, Amazonas</p>
+          <div className={`${darkMode ? 'bg-gray-700' : 'bg-gray-800'} rounded-lg p-4 mb-6 transition-colors`}>
+            <p className="text-sm mb-2">{t.footer.credit} <span className="font-semibold text-teal-400">{t.footer.hub}</span></p>
+            <a href="#" className="text-xs text-teal-400 hover:text-teal-300 transition-colors">
+              🔗 {t.footer.smartCard}
+            </a>
+          </div>
+          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>© 2026 Casa da Graça — Manaus, Amazonas</p>
         </div>
       </footer>
     </div>
