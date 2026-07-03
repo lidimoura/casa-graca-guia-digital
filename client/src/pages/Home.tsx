@@ -26,65 +26,70 @@ export default function Home() {
   }, []);
 
   const slides = [
-    { id: 1, title: 'Fachada da Casa', placeholder: true },
-    { id: 2, title: 'Quarto Principal', placeholder: true },
-    { id: 3, title: 'Sala de Estar', placeholder: true },
-    { id: 4, title: 'Praça do Caranguejo', placeholder: true },
-    { id: 5, title: 'Bairro Eldorado', placeholder: true },
+    { id: 1, title: 'Sala de Estar', src: '/fotos/casa/sala-sofa-janela.jpg' },
+    { id: 2, title: 'Entrada da Casa', src: '/fotos/casa/entrada-casa.jpg' },
+    { id: 3, title: 'Sala com Janela', src: '/fotos/casa/sala-de-estar-janela.jpg' },
+    { id: 4, title: 'Sala & TV', src: '/fotos/casa/sala-estar-janela-tv.jpg' },
+    { id: 5, title: 'Quarto Principal', src: '/fotos/casa/quarto-principal-cama.jpg' },
+    { id: 6, title: 'Cozinha & Sala', src: '/fotos/casa/sala-cozinha-entrada.jpg' },
+    { id: 7, title: 'Cozinha & Lavanderia', src: '/fotos/casa/entrada-lavanderia-cozinha.jpg' },
+    { id: 8, title: 'Banheiro', src: '/fotos/casa/banheiro-pia.jpg' },
   ];
 
   // Carousel images for each establishment
   const carouselPhotos = {
     pharmacy1: [
-      { title: 'Drogasil - Fachada', placeholder: true },
-      { title: 'Drogasil - Interior', placeholder: true },
-      { title: 'Drogasil - Atendimento', placeholder: true },
+      { title: 'Drogasil - Fachada' },
+      { title: 'Drogasil - Interior' },
+      { title: 'Drogasil - Atendimento' },
     ],
     pharmacy2: [
-      { title: 'Drogaria Santo Remédio - Fachada', placeholder: true },
-      { title: 'Drogaria Santo Remédio - Produtos', placeholder: true },
+      { title: 'Drogaria Santo Remédio - Fachada' },
+      { title: 'Drogaria Santo Remédio - Produtos' },
     ],
     crab: [
-      { title: 'Praça do Caranguejo - Ambiente', placeholder: true },
-      { title: 'Praça do Caranguejo - Pratos', placeholder: true },
-      { title: 'Praça do Caranguejo - Noite', placeholder: true },
+      { title: 'Praça do Caranguejo - Ambiente' },
+      { title: 'Praça do Caranguejo - Pratos' },
+      { title: 'Praça do Caranguejo - Noite' },
     ],
     hango: [
-      { title: 'Assados Hango - Fachada', placeholder: true },
-      { title: 'Assados Hango - Churrasco', placeholder: true },
-      { title: 'Assados Hango - Ambiente', placeholder: true },
+      { title: 'Assados Hango - Fachada' },
+      { title: 'Assados Hango - Churrasco' },
+      { title: 'Assados Hango - Ambiente' },
     ],
     coffee: [
-      { title: 'Banca de Café Regional - Bebidas', placeholder: true },
-      { title: 'Banca de Café Regional - Ambiente', placeholder: true },
+      { title: 'Banca de Café Regional - Bebidas' },
+      { title: 'Banca de Café Regional - Ambiente' },
     ],
     bakery: [
-      { title: 'Empório do Pão - Fachada', placeholder: true },
-      { title: 'Empório do Pão - Pães e Salgados', placeholder: true },
-      { title: 'Empório do Pão - Vitrine', placeholder: true },
+      { title: 'Empório do Pão', src: '/fotos/padaria/emporio-do-pao.jpg' },
+      { title: 'Vitrine de Salgados', src: '/fotos/padaria/emporio-do-pao-vitrine-salgados.jpg' },
+      { title: 'Banana Chips', src: '/fotos/padaria/emporio-do-pao-banan-chips.jpg' },
+      { title: 'Cardápio', src: '/fotos/padaria/emporio-do-pao-cardapio.jpg' },
+      { title: 'Delivery Disponível', src: '/fotos/padaria/emporio-do-pao-delivery.jpg' },
     ],
     // Barracas da Feira
     feira_deliciasdaroca: [
-      { title: 'Delícias da Roça - Barraca', placeholder: true },
-      { title: 'Delícias da Roça - Doces de Cupuaçu', placeholder: true },
-      { title: 'Delícias da Roça - Banana Frita', placeholder: true },
+      { title: 'Delícias da Roça - Barraca', src: '/fotos/feira/barraquinha-delicias-roca.jpg' },
     ],
     feira_frutas1: [
-      { title: 'Barraquinha de Frutas - Produtos', placeholder: true },
-      { title: 'Barraquinha de Frutas - Tucumã', placeholder: true },
+      { title: 'Barraquinha de Frutas', src: '/fotos/feira/barraquinha-mara.jpg' },
+      { title: 'Frutas Regionais', src: '/fotos/feira/barraquinha-mara-frutas.jpg' },
+      { title: 'Tucumã', src: '/fotos/feira/barraquinha-mara-tucuma.jpg' },
     ],
     feira_frutas2: [
-      { title: 'Frutas e Mel Mandacaru - Barraca', placeholder: true },
-      { title: 'Frutas e Mel Mandacaru - Mel', placeholder: true },
+      { title: 'Frutas e Mel Mandacaru', src: '/fotos/feira/barraquinha-mandacaru.jpg' },
+      { title: 'Barraca Completa', src: '/fotos/feira/barraquinha-mandacaru-completa.jpg' },
+      { title: 'Tucumã & Banana', src: '/fotos/feira/barraquinha-mandacaru-tucuma-banana.jpg' },
     ],
     feira_castanha: [
-      { title: 'Castanha Descascada na Hora - Barraca', placeholder: true },
-      { title: 'Castanha Descascada - Produto', placeholder: true },
+      { title: 'Castanha Descascada na Hora', src: '/fotos/feira/barraquinha-castanha.jpg' },
+      { title: 'Descascando na Hora', src: '/fotos/feira/barraquinha-descascando-castanha.jpg' },
+      { title: 'Close — Castanha Fresca', src: '/fotos/feira/barraquinha-descascando-castanha-close.jpg' },
     ],
     feira_pastelaria: [
-      { title: 'Pastelaria Paulista - Harumaki', placeholder: true },
-      { title: 'Pastelaria Paulista - Pastéis', placeholder: true },
-      { title: 'Pastelaria Paulista - Salgados', placeholder: true },
+      { title: 'Pastelaria Paulista', src: '/fotos/feira/pastelaria-paulista-placa.jpg' },
+      { title: 'Pastéis e Salgados', src: '/fotos/feira/pastelaria-paulista-salgados.jpg' },
     ],
   };
 
@@ -412,25 +417,41 @@ export default function Home() {
   const renderCarousel = (carouselId: string) => {
     const photos = carouselPhotos[carouselId as keyof typeof carouselPhotos] || [];
     const currentIndex = carouselIndices[carouselId] ?? 0;
+    const currentPhoto = photos[currentIndex];
+    const hasImage = !!(currentPhoto as any)?.src;
 
     return (
-      <div className="relative mb-4 rounded-lg overflow-hidden h-48 md:h-56 flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50 dark:from-gray-700 dark:to-gray-600">
-        <div className="text-center px-4">
-          <p className="text-4xl mb-2">📸</p>
-          <p className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{photos[currentIndex]?.title}</p>
-          <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>[Foto em breve — {currentIndex + 1}/{photos.length}]</p>
-        </div>
+      <div className="relative mb-4 rounded-lg overflow-hidden h-48 md:h-56">
+        {hasImage ? (
+          <>
+            <img
+              src={(currentPhoto as any).src}
+              alt={currentPhoto?.title}
+              className="w-full h-full object-cover transition-opacity duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <p className="absolute bottom-3 left-3 right-10 text-white text-xs font-semibold drop-shadow">{currentPhoto?.title}</p>
+          </>
+        ) : (
+          <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50 ${darkMode ? 'from-gray-700 to-gray-600' : ''}`}>
+            <div className="text-center px-4">
+              <p className="text-4xl mb-2">📸</p>
+              <p className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{currentPhoto?.title}</p>
+              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>[Foto em breve — {currentIndex + 1}/{photos.length}]</p>
+            </div>
+          </div>
+        )}
         {photos.length > 1 && (
           <>
-            <button onClick={() => prevCarousel(carouselId)} className={`absolute left-3 top-1/2 -translate-y-1/2 ${darkMode ? 'bg-gray-700/80 hover:bg-gray-600' : 'bg-white/80 hover:bg-white'} p-2 rounded-full transition-all shadow-sm`}>
-              <ChevronLeft className={`w-4 h-4 ${darkMode ? 'text-white' : 'text-gray-800'}`} />
+            <button onClick={() => prevCarousel(carouselId)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-1.5 rounded-full transition-all shadow backdrop-blur-sm">
+              <ChevronLeft className="w-4 h-4 text-white" />
             </button>
-            <button onClick={() => nextCarousel(carouselId)} className={`absolute right-3 top-1/2 -translate-y-1/2 ${darkMode ? 'bg-gray-700/80 hover:bg-gray-600' : 'bg-white/80 hover:bg-white'} p-2 rounded-full transition-all shadow-sm`}>
-              <ChevronRight className={`w-4 h-4 ${darkMode ? 'text-white' : 'text-gray-800'}`} />
+            <button onClick={() => nextCarousel(carouselId)} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-1.5 rounded-full transition-all shadow backdrop-blur-sm">
+              <ChevronRight className="w-4 h-4 text-white" />
             </button>
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            <div className="absolute bottom-3 right-3 flex gap-1.5">
               {photos.map((_, idx) => (
-                <button key={idx} onClick={() => setCarouselIndices((prev) => ({ ...prev, [carouselId]: idx }))} className={`h-1.5 rounded-full transition-all ${idx === currentIndex ? 'bg-teal-700 w-5' : darkMode ? 'bg-gray-500/60 w-1.5' : 'bg-white/70 w-1.5'}`} />
+                <button key={idx} onClick={() => setCarouselIndices((prev) => ({ ...prev, [carouselId]: idx }))} className={`h-1.5 rounded-full transition-all ${idx === currentIndex ? 'bg-white w-5' : 'bg-white/50 w-1.5'}`} />
               ))}
             </div>
           </>
@@ -461,21 +482,38 @@ export default function Home() {
       <section className={`${darkMode ? 'bg-gradient-to-b from-gray-800 to-gray-900' : 'bg-gradient-to-b from-teal-50 to-white'} py-8 md:py-12 transition-colors`}>
         <div className="max-w-6xl mx-auto px-4">
           {/* Slideshow */}
-          <div className="relative mb-8 md:mb-12 rounded-xl overflow-hidden h-64 md:h-80 flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50">
-            <div className="text-center">
-              <p className="text-5xl mb-3">🏡</p>
-              <p className={`text-lg font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{slides[currentSlide].title}</p>
-              <p className={`text-sm mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>[Foto {currentSlide + 1}/{slides.length}]</p>
+          <div className="relative mb-8 md:mb-12 rounded-xl overflow-hidden h-64 md:h-96 shadow-2xl">
+            {(slides[currentSlide] as any).src ? (
+              <img
+                key={currentSlide}
+                src={(slides[currentSlide] as any).src}
+                alt={slides[currentSlide].title}
+                className="w-full h-full object-cover transition-opacity duration-700 animate-fade-in"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50">
+                <div className="text-center">
+                  <p className="text-5xl mb-3">🏡</p>
+                  <p className={`text-lg font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{slides[currentSlide].title}</p>
+                </div>
+              </div>
+            )}
+            {/* Gradient overlay for text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
+            {/* Slide title */}
+            <div className="absolute bottom-14 left-5 md:left-6">
+              <p className="text-white text-lg md:text-xl font-semibold drop-shadow-lg">{slides[currentSlide].title}</p>
+              <p className="text-white/70 text-xs mt-0.5">Casa da Graça — Manaus, AM</p>
             </div>
-            <button onClick={prevSlide} className={`absolute left-3 md:left-4 top-1/2 -translate-y-1/2 ${darkMode ? 'bg-gray-700/80 hover:bg-gray-600' : 'bg-white/80 hover:bg-white'} p-2 rounded-full transition-all shadow`}>
-              <ChevronLeft className={`w-5 h-5 md:w-6 md:h-6 ${darkMode ? 'text-white' : 'text-gray-800'}`} />
+            <button onClick={prevSlide} className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 md:p-2.5 rounded-full transition-all shadow-lg backdrop-blur-sm">
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </button>
-            <button onClick={nextSlide} className={`absolute right-3 md:right-4 top-1/2 -translate-y-1/2 ${darkMode ? 'bg-gray-700/80 hover:bg-gray-600' : 'bg-white/80 hover:bg-white'} p-2 rounded-full transition-all shadow`}>
-              <ChevronRight className={`w-5 h-5 md:w-6 md:h-6 ${darkMode ? 'text-white' : 'text-gray-800'}`} />
+            <button onClick={nextSlide} className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 md:p-2.5 rounded-full transition-all shadow-lg backdrop-blur-sm">
+              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </button>
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
               {slides.map((_, idx) => (
-                <button key={idx} onClick={() => setCurrentSlide(idx)} className={`h-2 rounded-full transition-all ${idx === currentSlide ? 'bg-teal-700 w-6' : darkMode ? 'bg-gray-500/60 w-2' : 'bg-white/70 w-2'}`} />
+                <button key={idx} onClick={() => setCurrentSlide(idx)} className={`h-2 rounded-full transition-all ${idx === currentSlide ? 'bg-white w-6' : 'bg-white/50 w-2'}`} />
               ))}
             </div>
           </div>

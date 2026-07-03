@@ -117,26 +117,71 @@ O Guia Digital da Casa da Graça é uma SPA (Single Page Application) trilíngue
 
 ---
 
+### [v0.6.0] — 2026-07-03 | Fotos Reais — Casa, Padaria e Feira
+**Responsável:** Hub Encontro d'Água (Antigravity AI)
+
+**Mudanças aplicadas em `client/src/pages/Home.tsx`:**
+
+#### 🏠 Hero Slideshow — 8 Fotos da Casa
+- ✅ Capa definida como **`sala-sofa-janela.jpg`** (solicitação da Lídi)
+- ✅ Slideshow agora exibe fotos reais em vez de placeholders
+- Sequência: sala sofá janela → entrada → sala janela → sala & TV → quarto principal → cozinha & sala → cozinha & lavanderia → banheiro
+
+#### 🎨 Melhorias Visuais no Slideshow
+- ✅ Altura aumentada para `h-96` no desktop (era `h-80`)
+- ✅ Overlay gradiente escuro (bottom-up) para legibilidade do texto sobre as fotos
+- ✅ Título do slide + subtítulo "Casa da Graça — Manaus, AM" sobrepostos
+- ✅ Botões de navegação com `backdrop-blur` e `bg-black/40` (visíveis sobre qualquer foto)
+- ✅ Indicadores de slide em `bg-white` / `bg-white/50`
+
+#### 🥖 Empório do Pão — 5 Fotos Reais
+| Arquivo | Legenda |
+|---|---|
+| `emporio-do-pao.jpg` | Empório do Pão |
+| `emporio-do-pao-vitrine-salgados.jpg` | Vitrine de Salgados |
+| `emporio-do-pao-banan-chips.jpg` | Banana Chips |
+| `emporio-do-pao-cardapio.jpg` | Cardápio |
+| `emporio-do-pao-delivery.jpg` | Delivery Disponível |
+
+#### 🛖 Feira de Quarta-feira — Fotos por Barraca
+| Barraca | Fotos adicionadas |
+|---|---|
+| Delícias da Roça | `barraquinha-delicias-roca.jpg` |
+| Barraquinha de Frutas (Mara) | `barraquinha-mara.jpg`, `barraquinha-mara-frutas.jpg`, `barraquinha-mara-tucuma.jpg` |
+| Frutas e Mel Mandacaru | `barraquinha-mandacaru.jpg`, `barraquinha-mandacaru-completa.jpg`, `barraquinha-mandacaru-tucuma-banana.jpg` |
+| Castanha Descascada na Hora | `barraquinha-castanha.jpg`, `barraquinha-descascando-castanha.jpg`, `barraquinha-descascando-castanha-close.jpg` |
+| Pastelaria Paulista | `pastelaria-paulista-placa.jpg`, `pastelaria-paulista-salgados.jpg` |
+
+#### 🔧 Refatoração do `renderCarousel`
+- ✅ Lógica condicional: se `src` presente → `<img>` real + legenda sobreposta com gradiente
+- ✅ Fallback: placeholder 📸 com texto "[Foto em breve]" para categorias sem foto ainda
+- ✅ Botões de navegação com `backdrop-blur` + `bg-black/40` (uniforme sobre imagens reais)
+- ✅ Indicadores de slide movidos para canto inferior direito (evita conflito com legenda)
+
+**Build verificado:** `vite build` ✓ — sem erros, pronto para deploy
+
+---
+
 ## 🔮 Próximas Versões Planejadas
 
-### [v0.5.0] — Fotos Reais
-- [ ] Substituir placeholders pelas fotos enviadas pela Lídi
-- [ ] Otimizar imagens (WebP, lazy loading)
-
-### [v0.6.0] — Links Diretos Google Maps
+### [v0.7.0] — Links Diretos Google Maps
 - [ ] Adicionar URLs do Google My Business de cada estabelecimento
 - [ ] Embed do mapa do bairro Eldorado
 
-### [v0.7.0] — Informações Pendentes (TODO_REFINEMENTS)
+### [v0.8.0] — Fotos Pendentes
+- [ ] Farmácias (Drogasil, Drogaria Santo Remédio)
+- [ ] Gastronomia (Praça do Caranguejo, Assados Hango, Banca de Café)
+- [ ] Otimizar imagens (WebP, lazy loading)
+
+### [v0.9.0] — Informações Pendentes (TODO_REFINEMENTS)
 - [ ] Links Drogasil, Santo Remédio, Assados Hango
 - [ ] Links Teatro Amazonas, MUSA, Ponta Negra
 - [ ] Mercadinhos e Shoppings
 
 ### [v1.0.0] — Release Final
-- [ ] Todas as fotos reais
 - [ ] Todos os links diretos
-- [ ] Testes mobile e desktop
-- [ ] Deploy final no Vercel
+- [ ] Testes mobile e desktop completos
+- [ ] SEO e meta tags revisados
 
 ---
 
