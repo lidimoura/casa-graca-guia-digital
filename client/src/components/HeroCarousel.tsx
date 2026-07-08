@@ -17,11 +17,14 @@ interface HeroCarouselProps {
 }
 
 const defaultSlides: Slide[] = [
-  { alt: 'Fachada da Casa da Graça', label: 'Casa da Graça', isPlaceholder: true },
-  { alt: 'Quarto Principal', label: 'Quarto Principal', isPlaceholder: true },
-  { alt: 'Sala de Estar', label: 'Sala de Estar', isPlaceholder: true },
-  { alt: 'Praça do Caranguejo', label: 'Praça do Caranguejo', isPlaceholder: true },
-  { alt: 'Bairro Eldorado — Manaus', label: 'Bairro Eldorado', isPlaceholder: true },
+  { url: '/fotos/casa/sala-sofa-janela.jpg',         alt: 'Sala de Estar — sofá e janela',       label: 'Sala de Estar' },
+  { url: '/fotos/casa/entrada-casa.jpg',             alt: 'Entrada da Casa da Graça',             label: 'Entrada' },
+  { url: '/fotos/casa/sala-de-estar-janela.jpg',     alt: 'Sala com janela ampla',                label: 'Sala' },
+  { url: '/fotos/casa/sala-estar-janela-tv.jpg',     alt: 'Sala com TV e janela',                 label: 'Sala & TV' },
+  { url: '/fotos/casa/quarto-principal-cama.jpg',    alt: 'Quarto principal com cama de casal',   label: 'Quarto Principal' },
+  { url: '/fotos/casa/sala-cozinha-entrada.jpg',     alt: 'Cozinha integrada à sala',             label: 'Cozinha & Sala' },
+  { url: '/fotos/casa/vista-cozinha-lavanderia.jpg', alt: 'Cozinha e área de lavanderia',         label: 'Cozinha & Lavanderia' },
+  { url: '/fotos/casa/banheiro-chuveiro.jpg',        alt: 'Banheiro com chuveiro',                label: 'Banheiro' },
 ];
 
 export function HeroCarousel({ slides = defaultSlides, className = '', darkMode = false }: HeroCarouselProps) {
