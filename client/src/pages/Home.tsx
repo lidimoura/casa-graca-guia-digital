@@ -1,742 +1,473 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, MapPin, Phone, MessageCircle, ExternalLink, Moon, Sun, Globe, Instagram } from 'lucide-react';
+import { Moon, Sun, MapPin, Phone, MessageCircle, ExternalLink, Globe, Instagram } from 'lucide-react';
+import { HeroCarousel } from '../components/HeroCarousel';
+import { QuickContacts } from '../components/QuickContacts';
+import { PlaceCard } from '../components/PlaceCard';
+import { GuiaWidget } from '../components/GuiaWidget';
+import {
+  pharmacies, food, bakery, feira, attractions, communityTourism, transport,
+} from '../data/places';
 
+// ─── i18n ─────────────────────────────────────────────────────────────────────
+const i18n = {
+  pt: {
+    eyebrow: 'Airbnb • Bairro Eldorado • Manaus, AM',
+    title: 'Casa da Graça',
+    subtitle: 'Seu lar na Amazônia 🌿',
+    pitch: 'No coração do bairro Eldorado, a menos de 15 minutos do Teatro Amazonas, aeroporto, rodoviária e dos principais shoppings de Manaus.',
+    chips: ['✈️ ~15 min aeroporto', '🎭 Teatro Amazonas', '🏬 3 shoppings', '🦀 Praça do Caranguejo', '💊 Farmácia 24h'],
+    host: 'Anfitriã', bookingCTA: 'Ver no Airbnb', directCTA: 'Reserva Direta',
+    call: 'Ligar', whatsapp: 'WhatsApp',
+    sections: {
+      house: { title: 'A Casa & Você', label: 'Bem-vindo' },
+      rules: 'Regras da Casa',
+      tips: 'Dicas Práticas',
+      pharmacies: { title: 'Farmácias 24h', label: 'Sua Segurança' },
+      food: { title: 'Gastronomia Amazônica', label: 'Sabores Únicos' },
+      bakery: { title: 'Padaria & Delivery', label: 'No Bairro' },
+      feira: { title: 'Feira de Quarta-feira', label: 'Praça do Caranguejo' },
+      faeiraSub: 'Toda quarta-feira a Praça do Caranguejo vira um festival de sabores regionais — frutas, mel, castanhas, pastéis e produtos artesanais da Amazônia!',
+      attractions: { title: 'Pontos Turísticos', label: 'Manaus Inesquecível' },
+      community: { title: 'Turismo Comunitário', label: 'Amazônia Autêntica' },
+      communitySub: 'Vá além dos pontos turísticos convencionais. Conheça comunidades ribeirinhas, povos indígenas e projetos de ecoturismo que geram renda diretamente para quem vive na floresta.',
+      transport: { title: 'Como Se Locomover', label: 'Transporte' },
+      location: 'Localização',
+    },
+    rules: [
+      '🚬 Proibido fumar dentro da casa — incluindo cigarros eletrônicos (vapes).',
+      '🚽 No vaso sanitário, apenas água e dejetos. Papel higiênico, absorvente, fralda e lenço umedecido vão no cesto de lixo do banheiro.',
+      '🍽️ Na pia da cozinha, não descarte restos de comida — use o cesto de lixo da cozinha.',
+      '♻️ Cestos de lixo disponíveis no banheiro e na cozinha — por favor, utilize-os!',
+      '🌙 Silêncio das 22h às 07h, conforme legislação do bairro residencial.',
+      '👥 Visitantes bem-vindos até as 21h. Após esse horário, taxa de hóspede adicional: R$80,00 + documento para cadastro.',
+      '🧹 Taxa de limpeza (opcional): R$170,00 ao final da estadia.',
+      '🛏️ Troca de roupa de cama, mesa e banho: R$60,00 (adicional).',
+      '⚠️ Se houver lixo no chão ou fora dos locais devidos ao final da estadia, a taxa de limpeza de R$170,00 será cobrada automaticamente.',
+    ],
+    tips: [
+      { emoji: '🦟', title: 'Repelente é essencial', desc: 'DEET 40% para passeios ao ar livre, especialmente ao entardecer.' },
+      { emoji: '💧', title: 'Hidrate-se sempre', desc: 'Clima tropical quente e úmido — beba 2–3 litros/dia. Garrafas na cozinha!' },
+      { emoji: '☀️', title: 'Protetor solar SPF 50+', desc: 'Sol equatorial intenso — reaplique a cada 2h ao ar livre.' },
+      { emoji: '🌧️', title: 'Chuvas rápidas', desc: 'Leve guarda-chuva compacto. As chuvas são intensas mas curtas.' },
+    ],
+    mapBtn: 'Ver no Google Maps',
+    footer: {
+      tagline: 'Seu refúgio na Amazônia',
+      credit: 'Guia criado pelo',
+      hub: "Hub Encontro d'Água",
+      hubCTA: 'Conhecer serviços do Hub',
+      hubWA: 'WhatsApp Hub',
+      hubWAMsg: "Olá! Vim pelo Guia de Boas-vindas da Casa da Graça e gostaria de conhecer os serviços do Hub Encontro d'Água!",
+      rights: '© 2026 Casa da Graça — Manaus, Amazonas',
+    },
+  },
+  en: {
+    eyebrow: 'Airbnb • Eldorado District • Manaus, AM',
+    title: 'Casa da Graça',
+    subtitle: 'Your home in the Amazon 🌿',
+    pitch: 'In the heart of the Eldorado neighborhood, less than 15 minutes from the Amazon Theater, airport, bus terminal and the main shopping malls in Manaus.',
+    chips: ['✈️ ~15 min airport', '🎭 Amazon Theater', '🏬 3 malls', '🦀 Crab Square', '💊 24h pharmacy'],
+    host: 'Host', bookingCTA: 'View on Airbnb', directCTA: 'Direct Booking',
+    call: 'Call', whatsapp: 'WhatsApp',
+    sections: {
+      house: { title: 'The House & You', label: 'Welcome' },
+      rules: 'House Rules',
+      tips: 'Practical Tips',
+      pharmacies: { title: '24h Pharmacies', label: 'Your Safety' },
+      food: { title: 'Amazonian Gastronomy', label: 'Unique Flavors' },
+      bakery: { title: 'Bakery & Delivery', label: 'Neighborhood' },
+      feira: { title: 'Wednesday Market', label: 'Crab Square' },
+      faeiraSub: 'Every Wednesday, Crab Square becomes a regional flavor festival — fruits, honey, chestnuts, pastries and Amazonian artisanal products!',
+      attractions: { title: 'Tourist Attractions', label: 'Unforgettable Manaus' },
+      community: { title: 'Community Tourism', label: 'Authentic Amazon' },
+      communitySub: 'Go beyond conventional tourist spots. Meet riverside communities, indigenous peoples and ecotourism projects that generate income directly for those who live in the forest.',
+      transport: { title: 'Getting Around', label: 'Transport' },
+      location: 'Location',
+    },
+    rules: [
+      '🚬 No smoking inside the house — including e-cigarettes (vapes).',
+      '🚽 Only water and waste in the toilet. Toilet paper, pads, diapers and wet wipes go in the bathroom trash bin.',
+      '🍽️ Do not discard food scraps in the kitchen sink — use the kitchen trash bin.',
+      '♻️ Trash bins available in the bathroom and kitchen — please use them!',
+      '🌙 Quiet hours from 10pm to 7am, per local residential regulations.',
+      '👥 Visitors welcome until 9pm. After that, additional guest fee: R$80 + ID document.',
+      '🧹 Cleaning fee (optional): R$170 at the end of your stay.',
+      '🛏️ Bed, table and bath linen change: R$60 (additional).',
+      '⚠️ If there is trash on the floor or outside designated areas at the end of your stay, the R$170 cleaning fee will be automatically charged.',
+    ],
+    tips: [
+      { emoji: '🦟', title: 'Repellent is essential', desc: '40% DEET for outdoor activities, especially at dusk.' },
+      { emoji: '💧', title: 'Stay hydrated', desc: 'Hot and humid tropical climate — drink 2–3 liters/day. Bottles in the kitchen!' },
+      { emoji: '☀️', title: 'SPF 50+ sunscreen', desc: 'Intense equatorial sun — reapply every 2h outdoors.' },
+      { emoji: '🌧️', title: 'Quick rain showers', desc: 'Bring a compact umbrella. Rains are intense but short.' },
+    ],
+    mapBtn: 'Open in Google Maps',
+    footer: {
+      tagline: 'Your refuge in the Amazon',
+      credit: 'Guide created by',
+      hub: "Hub Encontro d'Água",
+      hubCTA: 'Discover Hub services',
+      hubWA: 'Hub WhatsApp',
+      hubWAMsg: "Hello! I came through the Casa da Graça Welcome Guide and would like to know more about Hub Encontro d'Água services!",
+      rights: '© 2026 Casa da Graça — Manaus, Amazonas',
+    },
+  },
+  es: {
+    eyebrow: 'Airbnb • Barrio Eldorado • Manaos, AM',
+    title: 'Casa da Graça',
+    subtitle: 'Tu hogar en la Amazonia 🌿',
+    pitch: 'En el corazón del barrio Eldorado, a menos de 15 minutos del Teatro Amazonas, aeropuerto, terminal de buses y los principales centros comerciales de Manaos.',
+    chips: ['✈️ ~15 min aeropuerto', '🎭 Teatro Amazonas', '🏬 3 centros', '🦀 Plaza Cangrejo', '💊 Farmacia 24h'],
+    host: 'Anfitriona', bookingCTA: 'Ver en Airbnb', directCTA: 'Reserva Directa',
+    call: 'Llamar', whatsapp: 'WhatsApp',
+    sections: {
+      house: { title: 'La Casa & Tú', label: 'Bienvenido' },
+      rules: 'Reglas de la Casa',
+      tips: 'Consejos Prácticos',
+      pharmacies: { title: 'Farmacias 24h', label: 'Tu Seguridad' },
+      food: { title: 'Gastronomía Amazónica', label: 'Sabores Únicos' },
+      bakery: { title: 'Panadería & Delivery', label: 'En el Barrio' },
+      feira: { title: 'Feria del Miércoles', label: 'Plaza del Cangrejo' },
+      faeiraSub: '¡Todos los miércoles, la Plaza del Cangrejo se convierte en un festival de sabores regionales — frutas, miel, castañas, pasteles y productos artesanales amazónicos!',
+      attractions: { title: 'Atracciones Turísticas', label: 'Manaos Inolvidable' },
+      community: { title: 'Turismo Comunitario', label: 'Amazonia Auténtica' },
+      communitySub: 'Ve más allá de los puntos turísticos convencionales. Conoce comunidades ribereñas, pueblos indígenas y proyectos de ecoturismo que generan ingresos directamente para quienes viven en la selva.',
+      transport: { title: 'Cómo Moverse', label: 'Transporte' },
+      location: 'Ubicación',
+    },
+    rules: [
+      '🚬 Prohibido fumar dentro de la casa — incluidos cigarrillos electrónicos (vapes).',
+      '🚽 Solo agua y desechos en el inodoro. Papel higiénico, toallitas sanitarias, pañales y toallitas húmedas van al cubo de basura del baño.',
+      '🍽️ No tires restos de comida al fregadero de la cocina — usa el cubo de basura de la cocina.',
+      '♻️ Cubos de basura disponibles en el baño y la cocina — ¡por favor utilízalos!',
+      '🌙 Silencio de 22h a 07h, según la legislación del barrio residencial.',
+      '👥 Visitantes bienvenidos hasta las 21h. Después, tarifa de huésped adicional: R$80 + documento de identidad.',
+      '🧹 Tarifa de limpieza (opcional): R$170 al final de la estadía.',
+      '🛏️ Cambio de ropa de cama, mesa y baño: R$60 (adicional).',
+      '⚠️ Si hay basura en el suelo o fuera de los lugares designados al final de la estadía, se cobrará automáticamente la tarifa de limpieza de R$170.',
+    ],
+    tips: [
+      { emoji: '🦟', title: 'El repelente es esencial', desc: 'DEET 40% para actividades al aire libre, especialmente al atardecer.' },
+      { emoji: '💧', title: 'Mantente hidratado', desc: 'Clima tropical cálido y húmedo — bebe 2–3 litros/día. ¡Botellas en la cocina!' },
+      { emoji: '☀️', title: 'Protector solar SPF 50+', desc: 'Sol ecuatorial intenso — reaplicar cada 2h al aire libre.' },
+      { emoji: '🌧️', title: 'Lluvias rápidas', desc: 'Lleva paraguas compacto. Las lluvias son intensas pero cortas.' },
+    ],
+    mapBtn: 'Ver en Google Maps',
+    footer: {
+      tagline: 'Tu refugio en la Amazonia',
+      credit: 'Guía creada por',
+      hub: "Hub Encontro d'Água",
+      hubCTA: 'Descubrir servicios del Hub',
+      hubWA: 'WhatsApp Hub',
+      hubWAMsg: "¡Hola! Llegué a través de la Guía de Bienvenida de Casa da Graça y me gustaría conocer los servicios del Hub Encontro d'Água!",
+      rights: '© 2026 Casa da Graça — Manaos, Amazonas',
+    },
+  },
+};
+
+// ─── Section Header ───────────────────────────────────────────────────────────
+function SectionHeader({ label, title, subtitle }: { label: string; title: string; subtitle?: string }) {
+  return (
+    <div className="mb-8">
+      <p className="section-label">{label}</p>
+      <h2 className="text-3xl md:text-4xl font-bold mb-2" style={{ fontFamily: 'var(--font-display)' }}>{title}</h2>
+      {subtitle && <p className="text-sm md:text-base max-w-2xl leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>{subtitle}</p>}
+    </div>
+  );
+}
+
+// ─── Home ─────────────────────────────────────────────────────────────────────
 export default function Home() {
-  const [lang, setLang] = useState('pt');
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [lang, setLang]       = useState('pt');
   const [darkMode, setDarkMode] = useState(false);
-  const [carouselIndices, setCarouselIndices] = useState<Record<string, number>>({});
 
-  // Persist dark mode preference
   useEffect(() => {
     const saved = localStorage.getItem('darkMode');
     if (saved) setDarkMode(JSON.parse(saved));
   }, []);
-
   useEffect(() => {
     localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    document.documentElement.classList.toggle('dark', darkMode);
   }, [darkMode]);
 
-  // Auto-advance hero slideshow
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4800);
-    return () => clearInterval(timer);
-  }, []);
-
-  const slides = [
-    { id: 1, title: 'Sala de Estar', src: '/fotos/casa/sala-sofa-janela.jpg' },
-    { id: 2, title: 'Entrada da Casa', src: '/fotos/casa/entrada-casa.jpg' },
-    { id: 3, title: 'Sala com Janela', src: '/fotos/casa/sala-de-estar-janela.jpg' },
-    { id: 4, title: 'Sala & TV', src: '/fotos/casa/sala-estar-janela-tv.jpg' },
-    { id: 5, title: 'Quarto Principal', src: '/fotos/casa/quarto-principal-cama.jpg' },
-    { id: 6, title: 'Cozinha & Sala', src: '/fotos/casa/sala-cozinha-entrada.jpg' },
-    { id: 7, title: 'Cozinha & Lavanderia', src: '/fotos/casa/entrada-lavanderia-cozinha.jpg' },
-    { id: 8, title: 'Banheiro', src: '/fotos/casa/banheiro-pia.jpg' },
-  ];
-
-  // Carousel images for each establishment
-  const carouselPhotos = {
-    pharmacy1: [
-      { title: 'Drogasil - Fachada' },
-      { title: 'Drogasil - Interior' },
-      { title: 'Drogasil - Atendimento' },
-    ],
-    pharmacy2: [
-      { title: 'Drogaria Santo Remédio - Fachada' },
-      { title: 'Drogaria Santo Remédio - Produtos' },
-    ],
-    crab: [
-      { title: 'Praça do Caranguejo - Ambiente' },
-      { title: 'Praça do Caranguejo - Pratos' },
-      { title: 'Praça do Caranguejo - Noite' },
-    ],
-    hango: [
-      { title: 'Assados Hango - Fachada' },
-      { title: 'Assados Hango - Churrasco' },
-      { title: 'Assados Hango - Ambiente' },
-    ],
-    coffee: [
-      { title: 'Banca de Café Regional - Bebidas' },
-      { title: 'Banca de Café Regional - Ambiente' },
-    ],
-    bakery: [
-      { title: 'Empório do Pão', src: '/fotos/padaria/emporio-do-pao.jpg' },
-      { title: 'Vitrine de Salgados', src: '/fotos/padaria/emporio-do-pao-vitrine-salgados.jpg' },
-      { title: 'Banana Chips', src: '/fotos/padaria/emporio-do-pao-banan-chips.jpg' },
-      { title: 'Cardápio', src: '/fotos/padaria/emporio-do-pao-cardapio.jpg' },
-      { title: 'Delivery Disponível', src: '/fotos/padaria/emporio-do-pao-delivery.jpg' },
-    ],
-    // Barracas da Feira
-    feira_deliciasdaroca: [
-      { title: 'Delícias da Roça - Barraca', src: '/fotos/feira/barraquinha-delicias-roca.jpg' },
-    ],
-    feira_frutas1: [
-      { title: 'Barraquinha de Frutas', src: '/fotos/feira/barraquinha-mara.jpg' },
-      { title: 'Frutas Regionais', src: '/fotos/feira/barraquinha-mara-frutas.jpg' },
-      { title: 'Tucumã', src: '/fotos/feira/barraquinha-mara-tucuma.jpg' },
-    ],
-    feira_frutas2: [
-      { title: 'Frutas e Mel Mandacaru', src: '/fotos/feira/barraquinha-mandacaru.jpg' },
-      { title: 'Barraca Completa', src: '/fotos/feira/barraquinha-mandacaru-completa.jpg' },
-      { title: 'Tucumã & Banana', src: '/fotos/feira/barraquinha-mandacaru-tucuma-banana.jpg' },
-    ],
-    feira_castanha: [
-      { title: 'Castanha Descascada na Hora', src: '/fotos/feira/barraquinha-castanha.jpg' },
-      { title: 'Descascando na Hora', src: '/fotos/feira/barraquinha-descascando-castanha.jpg' },
-      { title: 'Close — Castanha Fresca', src: '/fotos/feira/barraquinha-descascando-castanha-close.jpg' },
-    ],
-    feira_pastelaria: [
-      { title: 'Pastelaria Paulista', src: '/fotos/feira/pastelaria-paulista-placa.jpg' },
-      { title: 'Pastéis e Salgados', src: '/fotos/feira/pastelaria-paulista-salgados.jpg' },
-    ],
-  };
-
-  // Data structure with links
-  const establishments = {
-    pharmacies: [
-      { pt: 'Drogasil', en: 'Drogasil', es: 'Drogasil', emoji: '💊', whatsapp: '', phone: '', maps: '', site: '', instagram: '', carousel: 'pharmacy1' },
-      { pt: 'Drogaria Santo Remédio', en: 'Pharmacy Santo Remedy', es: 'Farmacia Santo Remedio', emoji: '💊', whatsapp: '', phone: '', maps: '', site: '', instagram: '', carousel: 'pharmacy2' },
-    ],
-    food: [
-      { pt: 'Praça do Caranguejo', en: 'Crab Square', es: 'Plaza del Cangrejo', emoji: '🦀', whatsapp: '', phone: '', maps: '', site: '', instagram: '', carousel: 'crab' },
-      { pt: 'Assados Hango', en: 'Hango Grilled Meats', es: 'Asados Hango', emoji: '🍖', whatsapp: '', phone: '', maps: '', site: '', instagram: '', carousel: 'hango' },
-      { pt: 'Banca de Café Regional', en: 'Regional Coffee Stand', es: 'Puesto de Café Regional', emoji: '☕', whatsapp: '', phone: '', maps: '', site: '', instagram: '', carousel: 'coffee' },
-      {
-        pt: 'Empório do Pão',
-        en: 'Empório do Pão (Bakery)',
-        es: 'Empório do Pão (Panadería)',
-        emoji: '🥖',
-        whatsapp: '5592330421410',
-        phone: '0923304-2141',
-        maps: 'https://www.google.com/maps/search/Emp%C3%B3rio+do+P%C3%A3o+Manaus',
-        site: '',
-        instagram: 'https://www.instagram.com/emporiodopaoam',
-        carousel: 'bakery',
-      },
-    ],
-    feira: [
-      {
-        pt: 'Delícias da Roça',
-        en: 'Delícias da Roça',
-        es: 'Delícias da Roça',
-        emoji: '🌾',
-        whatsapp: '5592985926193',
-        phone: '',
-        maps: 'https://www.google.com/maps/search/Feira+Pra%C3%A7a+Caranguejo+Manaus',
-        site: '',
-        instagram: 'https://www.instagram.com/deliciasdaroca',
-        carousel: 'feira_deliciasdaroca',
-        desc_pt: 'Banana frita, farinha do Uarini/ovinha, farinha branca, farofa de banana frita, mel, beiju, biscoitos de maizena saborizados, doces de cupuaçu (balas de chocolate c/ castanha, geleia, salame de cupuaçu)',
-        desc_en: 'Fried banana, Uarini flour, white cassava flour, fried banana farofa, honey, beiju, flavored corn cookies, cupuaçu sweets (chocolate candies with chestnut, jelly, cupuaçu salami)',
-        desc_es: 'Banana frita, harina de Uarini, harina de mandioca blanca, farofa de banana frita, miel, beiju, galletas de maizena saborizadas, dulces de cupuaçu (bombones de chocolate con castaña, jalea, salame de cupuaçu)',
-      },
-      {
-        pt: 'Barraquinha de Frutas',
-        en: 'Fruit Stall',
-        es: 'Puesto de Frutas',
-        emoji: '🍉',
-        whatsapp: '5592991512181',
-        phone: '',
-        maps: 'https://www.google.com/maps/search/Feira+Pra%C3%A7a+Caranguejo+Manaus',
-        site: '',
-        instagram: '',
-        carousel: 'feira_frutas1',
-        desc_pt: 'Manga, ingá, tucumã (fruta e descascado), jenipapo, queijo coalho e mais frutas regionais',
-        desc_en: 'Mango, ingá, tucumã (whole and shelled), jenipapo, cottage cheese and more regional fruits',
-        desc_es: 'Mango, ingá, tucumã (entera y pelada), jenipapo, queso coalho y más frutas regionales',
-      },
-      {
-        pt: 'Frutas, Produtos Regionais e Mel Mandacaru',
-        en: 'Fruits, Regional Products & Mandacaru Honey',
-        es: 'Frutas, Productos Regionales y Miel Mandacaru',
-        emoji: '🍯',
-        whatsapp: '5592984926217',
-        phone: '',
-        maps: 'https://www.google.com/maps/search/Feira+Pra%C3%A7a+Caranguejo+Manaus',
-        site: '',
-        instagram: '',
-        carousel: 'feira_frutas2',
-        desc_pt: 'Frutas frescas da região, produtos regionais e mel mandacaru puro',
-        desc_en: 'Fresh regional fruits, regional products and pure mandacaru honey',
-        desc_es: 'Frutas frescas de la región, productos regionales y miel mandacaru puro',
-      },
-      {
-        pt: 'Castanha Descascada na Hora',
-        en: 'Freshly Shelled Chestnuts',
-        es: 'Castaña Pelada al Momento',
-        emoji: '🌰',
-        whatsapp: '5592999771746',
-        phone: '',
-        maps: 'https://www.google.com/maps/search/Feira+Pra%C3%A7a+Caranguejo+Manaus',
-        site: '',
-        instagram: '',
-        carousel: 'feira_castanha',
-        desc_pt: 'Castanha-do-Pará descascada na hora + produtos regionais da Amazônia',
-        desc_en: 'Freshly shelled Brazil nuts + regional Amazonian products',
-        desc_es: 'Castaña de Pará pelada al momento + productos regionales amazónicos',
-      },
-      {
-        pt: 'Pastelaria Paulista',
-        en: 'Pastelaria Paulista',
-        es: 'Pastelaria Paulista',
-        emoji: '🥟',
-        whatsapp: '',
-        phone: '',
-        maps: 'https://www.google.com/maps/search/Feira+Pra%C3%A7a+Caranguejo+Manaus',
-        site: '',
-        instagram: '',
-        carousel: 'feira_pastelaria',
-        desc_pt: 'Harumaki (rolinho primavera), pastéis fritos e assados, salgados diversos',
-        desc_en: 'Harumaki (spring rolls), fried and baked pastéis, assorted snacks',
-        desc_es: 'Harumaki (rollitos de primavera), pasteles fritos y horneados, bocadillos variados',
-      },
-    ],
-    attractions: [
-      { pt: 'Teatro Amazonas', en: 'Amazon Theater', es: 'Teatro Amazonas', emoji: '🎭', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: 'Ingressos online disponíveis', info_en: 'Online tickets available', info_es: 'Entradas en línea disponibles' },
-      { pt: 'MUSA - Museu da Amazônia', en: 'MUSA - Amazon Museum', es: 'MUSA - Museo Amazónico', emoji: '🌳', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: 'Entrada paga — parque incrível!', info_en: 'Paid entry — amazing park!', info_es: 'Entrada pagada — ¡parque increíble!' },
-      { pt: 'Encontro das Águas', en: 'Meeting of Waters', es: 'Encuentro de Aguas', emoji: '💧', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: 'Tours disponíveis — inesquecível!', info_en: 'Tours available — unforgettable!', info_es: '¡Tours disponibles — inolvidable!' },
-      { pt: 'Ponta Negra', en: 'Ponta Negra Beach', es: 'Playa Ponta Negra', emoji: '🏖️', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: 'Acesso livre — praia urbana única', info_en: 'Free access — unique urban beach', info_es: 'Acceso gratuito — playa urbana única' },
-    ],
-    transport: [
-      { pt: 'Uber / 99', en: 'Uber / 99', es: 'Uber / 99', emoji: '🚕', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: 'Apps disponíveis — mais prático', info_en: 'Apps available — most practical', info_es: 'Aplicaciones disponibles — más práctico' },
-      { pt: 'Aeroporto Eduardo Gomes', en: 'Eduardo Gomes Airport', es: 'Aeropuerto Eduardo Gomes', emoji: '✈️', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: '~25 min de Uber daqui', info_en: '~25 min by Uber from here', info_es: '~25 min en Uber desde aquí' },
-      { pt: 'Locação de Carros', en: 'Car Rental', es: 'Alquiler de Autos', emoji: '🚙', whatsapp: '', phone: '', maps: '', site: '', instagram: '', info_pt: 'Localiza, Movida, Unidas', info_en: 'Localiza, Movida, Unidas', info_es: 'Localiza, Movida, Unidas' },
-    ],
-  };
-
-  const content = {
-    pt: {
-      eyebrow: '🌿 Airbnb & Estadias em Manaus, Amazonas',
-      title: 'Casa da Graça',
-      pitch: 'Bem-vindo ao seu lar em Manaus! No coração do bairro Eldorado, a menos de 15 minutos do Teatro Amazonas, aeroporto, rodoviária, praças de alimentação, farmácias e dos principais shoppings.',
-      chips: [
-        { emoji: '✈️', text: '~15min aeroporto' },
-        { emoji: '🎭', text: 'Teatro Amazonas' },
-        { emoji: '🏬', text: '3 shoppings' },
-        { emoji: '🦀', text: 'Praça Caranguejo' },
-        { emoji: '💊', text: 'Farmácias delivery' },
-      ],
-      hostName: 'Graça Batalau',
-      hostWhatsApp: '+55 92 98255-9002',
-      bookingCTA: 'Ver no Airbnb',
-      directCTA: 'Reserva Direta',
-      sections: {
-        house: {
-          title: '🏠 A Casa & Você — Bem-vindo!',
-          intro: 'Ficamos felizes em receber você na Casa da Graça! Para que sua estadia seja confortável e agradável para todos, pedimos atenção às nossas regras. Manaus é tropical, vibrante e cheia de vida — aproveite cada momento! 🌿',
-          rulesTitle: '📋 Regras da Casa',
-          rules: [
-            '🚬 É proibido fumar dentro da casa — inclusive cigarros eletrônicos (vapes). O bom convívio agradece!',
-            '🚽 No vaso sanitário, apenas água e dejetos. Papel higiênico, absorvente, fralda e lenço umedecido devem ir no cesto de lixo do banheiro (já disponível para você).',
-            '🍽️ Na pia da cozinha, não descarte restos de comida para não entupir o encanamento. Use o cesto de lixo da cozinha — ele está ali para isso!',
-            '♻️ Cestos de lixo estão disponíveis no banheiro e na cozinha para o descarte consciente. Por favor, utilize-os.',
-            '🌙 Horário de silêncio: das 22h às 07h, conforme a legislação do bairro residencial. Manaus ganha vida à noite — mas os vizinhos também merecem descanso!',
-            '👥 Visitantes são bem-vindos até as 21h. Após esse horário, qualquer pessoa que permanecer ou dormir na casa deverá pagar a taxa adicional de hóspede (R$ 80,00) e encaminhar documento para cadastro nas diárias.',
-            '🧹 Taxa de limpeza opcional: R$ 170,00 (caso deseje ao final da sua estadia).',
-            '🛏️ Troca de roupa de cama, mesa e banho: R$ 60,00 (adicional).',
-            '⚠️ Atenção: se ao final da estadia houver lixo no chão ou fora dos locais devidos (cestos ou sacolas fechadas de lixo), a taxa de limpeza de R$ 170,00 será cobrada automaticamente.',
-          ],
-          tipsTitle: '💡 Dicas para Aproveitar Manaus',
-          tips: [
-            { emoji: '🦟', title: 'Repelente é essencial', desc: 'Leve repelente (40% DEET) para passeios ao ar livre, especialmente ao entardecer.' },
-            { emoji: '💧', title: 'Hidratação constante', desc: 'O clima tropical é quente e úmido. Beba bastante água (2-3 litros/dia). Garrafas reutilizáveis estão na cozinha!' },
-            { emoji: '☀️', title: 'Protetor solar SPF 50+', desc: 'O sol equatorial é intenso. Reaplique a cada 2h se estiver ao ar livre.' },
-            { emoji: '👕', title: 'Roupas leves', desc: 'Algodão é seu aliado. Leve um casaco fino para ambientes com ar-condicionado.' },
-          ],
-        },
-        pharmacies: { title: '💊 Farmácias 24h — Sua Segurança' },
-        food: { title: '🍽️ Gastronomia Amazônica — Sabores Únicos' },
-        feira: { title: '🛖 Feira de Quarta-feira — Praça do Caranguejo', subtitle: 'Toda quarta-feira a Praça do Caranguejo vira um festival de sabores regionais! Uma experiência única para conhecer a culinária e os produtos da Amazônia.' },
-        attractions: { title: '🎭 Pontos Turísticos — Experiências Inesquecíveis' },
-        transport: { title: '🚗 Transporte — Mobilidade Fácil' },
-        location: { title: '📍 Localização Estratégica' },
-      },
-      buttons: { whatsapp: 'WhatsApp', maps: 'Mapa', site: 'Site', discover: 'Descobrir', call: 'Ligar', viewPhotos: 'Ver Fotos', instagram: 'Instagram' },
-      footer: { credit: 'Guia Digital criado pelo', hub: 'Hub Encontro d\'Água', smartCard: 'Conheça os serviços do Hub', hubWhatsAppMsg: 'Olá! Vim através do Guia de Boas-vindas da Casa da Graça e gostaria de conhecer os serviços do Hub Encontro d\'Água!', rights: '© 2026 Casa da Graça — Manaus, Amazonas' },
-    },
-    en: {
-      eyebrow: '🌿 Airbnb & Stays in Manaus, Amazonas',
-      title: 'Casa da Graça',
-      pitch: 'Welcome to your home in Manaus! In the heart of the Eldorado neighborhood, less than 15 minutes from the Amazon Theater, airport, bus terminal, food courts, pharmacies and the main shopping malls.',
-      chips: [
-        { emoji: '✈️', text: '~15min airport' },
-        { emoji: '🎭', text: 'Amazon Theater' },
-        { emoji: '🏬', text: '3 malls' },
-        { emoji: '🦀', text: 'Crab Square' },
-        { emoji: '💊', text: 'Pharmacies delivery' },
-      ],
-      hostName: 'Graça Batalau',
-      hostWhatsApp: '+55 92 98255-9002',
-      bookingCTA: 'View on Airbnb',
-      directCTA: 'Direct Booking',
-      sections: {
-        house: {
-          title: '🏠 The House & You — Welcome!',
-          intro: 'We\'re so happy to welcome you to Casa da Graça! To ensure a comfortable and pleasant stay for everyone, please read our house rules. Manaus is tropical, vibrant and full of life — enjoy every moment! 🌿',
-          rulesTitle: '📋 House Rules',
-          rules: [
-            '🚬 Smoking is not allowed inside the house — including e-cigarettes (vapes). Thank you for your understanding!',
-            '🚽 Only water and waste in the toilet. Toilet paper, pads, diapers and wet wipes should go in the bathroom trash bin (provided for you).',
-            '🍽️ Please do not discard food scraps in the kitchen sink to avoid clogging the pipes. Use the kitchen trash bin — it\'s there for that!',
-            '♻️ Trash bins are available in the bathroom and kitchen for conscious disposal. Please use them.',
-            '🌙 Quiet hours: 10pm to 7am, according to local residential neighborhood regulations. Manaus comes alive at night — but the neighbors deserve rest too!',
-            '👥 Visitors are welcome until 9pm. After that time, anyone who stays or sleeps at the house must pay the additional guest fee (R$ 80.00) and submit their ID for registration.',
-            '🧹 Optional cleaning fee: R$ 170.00 (if desired at the end of your stay).',
-            '🛏️ Bed, table and bath linen change: R$ 60.00 (additional).',
-            '⚠️ Note: if at the end of your stay there is trash on the floor or outside the proper places (bins or closed trash bags), the R$ 170.00 cleaning fee will be automatically charged.',
-          ],
-          tipsTitle: '💡 Tips to Enjoy Manaus',
-          tips: [
-            { emoji: '🦟', title: 'Insect repellent is essential', desc: 'Bring repellent (40% DEET) for outdoor activities, especially at dusk.' },
-            { emoji: '💧', title: 'Constant hydration', desc: 'The tropical climate is hot and humid. Drink plenty of water (2-3 liters/day). Reusable bottles are in the kitchen!' },
-            { emoji: '☀️', title: 'SPF 50+ sunscreen', desc: 'The equatorial sun is intense. Reapply every 2h if outdoors.' },
-            { emoji: '👕', title: 'Light clothing', desc: 'Cotton is your ally. Bring a light jacket for air-conditioned spaces.' },
-          ],
-        },
-        pharmacies: { title: '💊 24h Pharmacies — Your Safety' },
-        food: { title: '🍽️ Amazonian Gastronomy — Unique Flavors' },
-        feira: { title: '🛖 Wednesday Market — Crab Square', subtitle: 'Every Wednesday, Crab Square becomes a festival of regional flavors! A unique experience to discover Amazonian cuisine and products.' },
-        attractions: { title: '🎭 Tourist Attractions — Unforgettable Experiences' },
-        transport: { title: '🚗 Transportation — Easy Mobility' },
-        location: { title: '📍 Strategic Location' },
-      },
-      buttons: { whatsapp: 'WhatsApp', maps: 'Map', site: 'Website', discover: 'Discover', call: 'Call', viewPhotos: 'View Photos', instagram: 'Instagram' },
-      footer: { credit: 'Digital Guide created by', hub: 'Hub Encontro d\'Água', smartCard: 'Discover Hub services', hubWhatsAppMsg: 'Hello! I came through the Casa da Graça Welcome Guide and would like to know more about Hub Encontro d\'Água services!', rights: '© 2026 Casa da Graça — Manaus, Amazonas' },
-    },
-    es: {
-      eyebrow: '🌿 Airbnb & Estadías en Manaos, Amazonas',
-      title: 'Casa da Graça',
-      pitch: '¡Bienvenido a tu hogar en Manaos! En el corazón del barrio Eldorado, a menos de 15 minutos del Teatro Amazonas, aeropuerto, terminal de autobuses, plazas de comida, farmacias y los principales centros comerciales.',
-      chips: [
-        { emoji: '✈️', text: '~15min aeropuerto' },
-        { emoji: '🎭', text: 'Teatro Amazonas' },
-        { emoji: '🏬', text: '3 centros' },
-        { emoji: '🦀', text: 'Plaza del Cangrejo' },
-        { emoji: '💊', text: 'Farmacias delivery' },
-      ],
-      hostName: 'Graça Batalau',
-      hostWhatsApp: '+55 92 98255-9002',
-      bookingCTA: 'Ver en Airbnb',
-      directCTA: 'Reserva Directa',
-      sections: {
-        house: {
-          title: '🏠 La Casa & Tú — ¡Bienvenido!',
-          intro: '¡Nos alegra mucho recibirte en la Casa da Graça! Para que tu estadía sea cómoda y agradable para todos, te pedimos que leas nuestras reglas. ¡Manaos es tropical, vibrante y llena de vida — disfruta cada momento! 🌿',
-          rulesTitle: '📋 Reglas de la Casa',
-          rules: [
-            '🚬 Está prohibido fumar dentro de la casa — incluidos los cigarrillos electrónicos (vapes). ¡Gracias por tu comprensión!',
-            '🚽 Solo agua y desechos en el inodoro. El papel higiénico, toallas sanitarias, pañales y toallitas húmedas deben ir en el cubo de basura del baño (ya disponible para ti).',
-            '🍽️ Por favor no tires restos de comida en el fregadero de la cocina para no obstruir las cañerías. ¡Usa el cubo de basura de la cocina — está ahí para eso!',
-            '♻️ Cubos de basura disponibles en el baño y la cocina para el descarte consciente. Por favor utilízalos.',
-            '🌙 Horario de silencio: de las 22h a las 07h, según la legislación del barrio residencial. ¡Manaos cobra vida de noche — pero los vecinos también merecen descanso!',
-            '👥 Los visitantes son bienvenidos hasta las 21h. Después de esa hora, cualquier persona que permanezca o duerma en la casa deberá pagar la tarifa adicional de huésped (R$ 80,00) y enviar su documento para registro.',
-            '🧹 Tarifa de limpieza opcional: R$ 170,00 (si lo deseas al final de tu estadía).',
-            '🛏️ Cambio de ropa de cama, mesa y baño: R$ 60,00 (adicional).',
-            '⚠️ Atención: si al final de la estadía hay basura en el suelo o fuera de los lugares adecuados (cubos o bolsas de basura cerradas), se cobrará automáticamente la tarifa de limpieza de R$ 170,00.',
-          ],
-          tipsTitle: '💡 Consejos para Disfrutar Manaos',
-          tips: [
-            { emoji: '🦟', title: 'El repelente es esencial', desc: 'Lleva repelente (40% DEET) para actividades al aire libre, especialmente al atardecer.' },
-            { emoji: '💧', title: 'Hidratación constante', desc: 'El clima tropical es cálido y húmedo. ¡Bebe mucha agua (2-3 litros/día). Botellas reutilizables en la cocina!' },
-            { emoji: '☀️', title: 'Protector solar SPF 50+', desc: 'El sol ecuatorial es intenso. Reaplicar cada 2h si estás al aire libre.' },
-            { emoji: '👕', title: 'Ropa ligera', desc: 'El algodón es tu aliado. Lleva una chaqueta fina para espacios con aire acondicionado.' },
-          ],
-        },
-        pharmacies: { title: '💊 Farmacias 24h — Tu Seguridad' },
-        food: { title: '🍽️ Gastronomía Amazónica — Sabores Únicos' },
-        feira: { title: '🛖 Feria del Miércoles — Plaza del Cangrejo', subtitle: '¡Todos los miércoles, la Plaza del Cangrejo se convierte en un festival de sabores regionales! Una experiencia única para descubrir la gastronomía y los productos amazónicos.' },
-        attractions: { title: '🎭 Atracciones Turísticas — Experiencias Inolvidables' },
-        transport: { title: '🚗 Transporte — Movilidad Fácil' },
-        location: { title: '📍 Ubicación Estratégica' },
-      },
-      buttons: { whatsapp: 'WhatsApp', maps: 'Mapa', site: 'Sitio', discover: 'Descubrir', call: 'Llamar', viewPhotos: 'Ver Fotos', instagram: 'Instagram' },
-      footer: { credit: 'Guía Digital creada por', hub: 'Hub Encontro d\'Água', smartCard: 'Descubre los servicios del Hub', hubWhatsAppMsg: '¡Hola! Llegué a través de la Guía de Bienvenida de Casa da Graça y me gustaría conocer los servicios del Hub Encontro d\'Água!', rights: '© 2026 Casa da Graça — Manaos, Amazonas' },
-    },
-  };
-
-  const t = content[lang as keyof typeof content];
-
-  const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-
-  const nextCarousel = (carouselId: string) => {
-    const photos = carouselPhotos[carouselId as keyof typeof carouselPhotos] || [];
-    setCarouselIndices((prev) => ({
-      ...prev,
-      [carouselId]: ((prev[carouselId] ?? 0) + 1) % photos.length,
-    }));
-  };
-
-  const prevCarousel = (carouselId: string) => {
-    const photos = carouselPhotos[carouselId as keyof typeof carouselPhotos] || [];
-    setCarouselIndices((prev) => ({
-      ...prev,
-      [carouselId]: ((prev[carouselId] ?? 0) - 1 + photos.length) % photos.length,
-    }));
-  };
-
-  // Button rendering component
-  const renderButtons = (item: any) => (
-    <div className="flex flex-wrap gap-2 mt-3">
-      {item.whatsapp && (
-        <a href={`https://wa.me/${item.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-xs bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-all flex items-center gap-1">
-          <MessageCircle className="w-3 h-3" /> {t.buttons.whatsapp}
-        </a>
-      )}
-      {item.phone && (
-        <a href={`tel:${item.phone.replace(/\D/g, '')}`} className="text-xs bg-teal-600 text-white px-3 py-1 rounded-full hover:bg-teal-700 transition-all flex items-center gap-1">
-          <Phone className="w-3 h-3" /> {t.buttons.call}
-        </a>
-      )}
-      {item.maps && (
-        <a href={item.maps} target="_blank" rel="noopener noreferrer" className="text-xs bg-blue-500 text-white px-3 py-1 rounded-full hover:bg-blue-600 transition-all flex items-center gap-1">
-          <MapPin className="w-3 h-3" /> {t.buttons.maps}
-        </a>
-      )}
-      {item.instagram && (
-        <a href={item.instagram} target="_blank" rel="noopener noreferrer" className="text-xs bg-pink-500 text-white px-3 py-1 rounded-full hover:bg-pink-600 transition-all flex items-center gap-1">
-          <Instagram className="w-3 h-3" /> {t.buttons.instagram}
-        </a>
-      )}
-      {item.site && (
-        <a href={item.site} target="_blank" rel="noopener noreferrer" className="text-xs bg-purple-500 text-white px-3 py-1 rounded-full hover:bg-purple-600 transition-all flex items-center gap-1">
-          <Globe className="w-3 h-3" /> {t.buttons.site}
-        </a>
-      )}
-      {!item.whatsapp && !item.phone && !item.maps && !item.instagram && !item.site && (
-        <a href={`https://www.google.com/maps/search/${lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}+Manaus`} target="_blank" rel="noopener noreferrer" className="text-xs bg-gray-500 text-white px-3 py-1 rounded-full hover:bg-gray-600 transition-all flex items-center gap-1">
-          <MapPin className="w-3 h-3" /> {t.buttons.discover}
-        </a>
-      )}
-    </div>
-  );
-
-  // Carousel component
-  const renderCarousel = (carouselId: string) => {
-    const photos = carouselPhotos[carouselId as keyof typeof carouselPhotos] || [];
-    const currentIndex = carouselIndices[carouselId] ?? 0;
-    const currentPhoto = photos[currentIndex];
-    const hasImage = !!(currentPhoto as any)?.src;
-
-    return (
-      <div className="relative mb-4 rounded-lg overflow-hidden h-48 md:h-56">
-        {hasImage ? (
-          <>
-            <img
-              src={(currentPhoto as any).src}
-              alt={currentPhoto?.title}
-              className="w-full h-full object-cover transition-opacity duration-500"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <p className="absolute bottom-3 left-3 right-10 text-white text-xs font-semibold drop-shadow">{currentPhoto?.title}</p>
-          </>
-        ) : (
-          <div className={`w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50 ${darkMode ? 'from-gray-700 to-gray-600' : ''}`}>
-            <div className="text-center px-4">
-              <p className="text-4xl mb-2">📸</p>
-              <p className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{currentPhoto?.title}</p>
-              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>[Foto em breve — {currentIndex + 1}/{photos.length}]</p>
-            </div>
-          </div>
-        )}
-        {photos.length > 1 && (
-          <>
-            <button onClick={() => prevCarousel(carouselId)} className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-1.5 rounded-full transition-all shadow backdrop-blur-sm">
-              <ChevronLeft className="w-4 h-4 text-white" />
-            </button>
-            <button onClick={() => nextCarousel(carouselId)} className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-1.5 rounded-full transition-all shadow backdrop-blur-sm">
-              <ChevronRight className="w-4 h-4 text-white" />
-            </button>
-            <div className="absolute bottom-3 right-3 flex gap-1.5">
-              {photos.map((_, idx) => (
-                <button key={idx} onClick={() => setCarouselIndices((prev) => ({ ...prev, [carouselId]: idx }))} className={`h-1.5 rounded-full transition-all ${idx === currentIndex ? 'bg-white w-5' : 'bg-white/50 w-1.5'}`} />
-              ))}
-            </div>
-          </>
-        )}
-      </div>
-    );
-  };
+  const t = i18n[lang as keyof typeof i18n];
+  const HOST_WA = '5592982559002';
 
   return (
-    <div className={`min-h-screen transition-colors ${darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      {/* Language & Theme Bar */}
-      <div className={`sticky top-0 z-50 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-b py-3 transition-colors`}>
-        <div className="max-w-6xl mx-auto px-4 flex justify-between items-center">
-          <div className="flex justify-center gap-2 flex-1">
-            {['pt', 'en', 'es'].map((l) => (
-              <button key={l} onClick={() => setLang(l)} className={`px-4 py-2 rounded-full font-semibold transition-all text-sm ${lang === l ? 'bg-teal-700 text-white' : darkMode ? 'bg-gray-700 text-gray-300 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+    <div className="min-h-screen transition-colors" style={{ background: 'var(--background)', color: 'var(--foreground)', fontFamily: 'var(--font-body)' }}>
+
+      {/* ── Sticky Nav ───────────────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-40 border-b transition-colors" style={{ background: 'rgba(var(--background-rgb,250,250,248),0.92)', backdropFilter: 'blur(16px)', borderColor: 'var(--border)' }}>
+        <div className="container flex items-center justify-between h-14 gap-3">
+          {/* Brand */}
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold" style={{ background: 'linear-gradient(135deg,#4A1D6B,#1B6B47)' }}>G</div>
+            <span className="font-bold text-sm hidden sm:block" style={{ fontFamily: 'var(--font-display)' }}>Casa da Graça</span>
+          </div>
+          {/* Lang switcher */}
+          <div className="flex items-center gap-1">
+            {(['pt','en','es'] as const).map(l => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`px-2.5 py-1 rounded-full text-xs font-semibold transition-all ${lang === l ? 'text-white' : 'opacity-60 hover:opacity-100'}`}
+                style={lang === l ? { background: 'var(--primary)' } : {}}
+              >
                 {l === 'pt' ? '🇧🇷 PT' : l === 'en' ? '🇺🇸 EN' : '🇪🇸 ES'}
               </button>
             ))}
           </div>
-          <button onClick={() => setDarkMode(!darkMode)} className={`p-2 rounded-full transition-all ${darkMode ? 'bg-gray-700 text-yellow-400 hover:bg-gray-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          {/* Dark mode */}
+          <button onClick={() => setDarkMode(d => !d)} className="p-2 rounded-full transition-all hover:opacity-80" style={{ background: 'var(--secondary)' }} aria-label="Alternar tema">
+            {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           </button>
+        </div>
+      </header>
+
+      {/* ── Hero ─────────────────────────────────────────────────────────────── */}
+      <section className="pb-8 md:pb-12">
+        <HeroCarousel darkMode={darkMode} />
+
+        <div className="container mt-6 md:mt-8">
+          {/* Eyebrow + Title */}
+          <p className="text-xs font-semibold uppercase tracking-widest mb-1.5" style={{ color: 'var(--accent)' }}>{t.eyebrow}</p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 leading-none" style={{ fontFamily: 'var(--font-display)' }}>{t.title}</h1>
+          <p className="text-lg md:text-xl font-medium mb-3" style={{ color: 'var(--muted-foreground)' }}>{t.subtitle}</p>
+          <p className="text-sm md:text-base leading-relaxed mb-5 max-w-2xl" style={{ color: 'var(--muted-foreground)' }}>{t.pitch}</p>
+
+          {/* Chips */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {t.chips.map((c, i) => <span key={i} className="chip">{c}</span>)}
+          </div>
+
+          {/* Host strip */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-2xl border" style={{ background: 'var(--secondary)', borderColor: 'var(--border)' }}>
+            <div>
+              <p className="text-xs mb-0.5" style={{ color: 'var(--muted-foreground)' }}>{t.host}</p>
+              <p className="font-bold text-sm" style={{ fontFamily: 'var(--font-display)' }}>Graça Batalau</p>
+              <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>+55 92 98255-9002</p>
+            </div>
+            <div className="flex gap-2 flex-wrap">
+              <a href={`tel:${HOST_WA}`} className="btn-outline text-xs gap-1.5"><Phone className="w-3.5 h-3.5" /> {t.call}</a>
+              <a href={`https://wa.me/${HOST_WA}`} target="_blank" rel="noopener noreferrer" className="btn-whatsapp text-xs"><MessageCircle className="w-3.5 h-3.5" /> {t.whatsapp}</a>
+              <a href="https://airbnb.com.br/rooms/1703136467602003248" target="_blank" rel="noopener noreferrer" className="btn-airbnb text-xs"><ExternalLink className="w-3.5 h-3.5" /> Airbnb</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Booking Banner ───────────────────────────────────────────────────── */}
+      <div style={{ background: 'linear-gradient(135deg,#E31C5F,#FF5A5F)' }} className="py-5">
+        <div className="container flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-white font-semibold text-sm text-center sm:text-left">
+            {lang === 'pt' ? '🌿 Reserve agora e descubra o melhor de Manaus!' : lang === 'en' ? '🌿 Book now and discover the best of Manaus!' : '🌿 ¡Reserva ahora y descubre lo mejor de Manaos!'}
+          </p>
+          <div className="flex gap-2 flex-wrap justify-center">
+            <a href="https://airbnb.com.br/rooms/1703136467602003248" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-white text-[#E31C5F] px-4 py-2 rounded-full font-semibold text-xs hover:bg-gray-50 transition-all">
+              {t.bookingCTA} <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <a href={`https://wa.me/${HOST_WA}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-white/20 text-white px-4 py-2 rounded-full font-semibold text-xs hover:bg-white/30 transition-all border border-white/30">
+              {t.directCTA} <MessageCircle className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className={`${darkMode ? 'bg-gradient-to-b from-gray-800 to-gray-900' : 'bg-gradient-to-b from-teal-50 to-white'} py-8 md:py-12 transition-colors`}>
-        <div className="max-w-6xl mx-auto px-4">
-          {/* Slideshow */}
-          <div className="relative mb-8 md:mb-12 rounded-xl overflow-hidden h-64 md:h-96 shadow-2xl">
-            {(slides[currentSlide] as any).src ? (
-              <img
-                key={currentSlide}
-                src={(slides[currentSlide] as any).src}
-                alt={slides[currentSlide].title}
-                className="w-full h-full object-cover transition-opacity duration-700 animate-fade-in"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-100 to-teal-50">
-                <div className="text-center">
-                  <p className="text-5xl mb-3">🏡</p>
-                  <p className={`text-lg font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{slides[currentSlide].title}</p>
-                </div>
-              </div>
-            )}
-            {/* Gradient overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
-            {/* Slide title */}
-            <div className="absolute bottom-14 left-5 md:left-6">
-              <p className="text-white text-lg md:text-xl font-semibold drop-shadow-lg">{slides[currentSlide].title}</p>
-              <p className="text-white/70 text-xs mt-0.5">Casa da Graça — Manaus, AM</p>
-            </div>
-            <button onClick={prevSlide} className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 md:p-2.5 rounded-full transition-all shadow-lg backdrop-blur-sm">
-              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 text-white" />
-            </button>
-            <button onClick={nextSlide} className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 md:p-2.5 rounded-full transition-all shadow-lg backdrop-blur-sm">
-              <ChevronRight className="w-5 h-5 md:w-6 md:h-6 text-white" />
-            </button>
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-              {slides.map((_, idx) => (
-                <button key={idx} onClick={() => setCurrentSlide(idx)} className={`h-2 rounded-full transition-all ${idx === currentSlide ? 'bg-white w-6' : 'bg-white/50 w-2'}`} />
-              ))}
-            </div>
-          </div>
+      {/* ── Main Content ─────────────────────────────────────────────────────── */}
+      <main className="container py-12 md:py-16 space-y-16 pb-safe-bar">
 
-          {/* Pitch Block */}
-          <div className="mb-8 md:mb-12">
-            <p className="text-sm font-semibold text-teal-700 mb-2">{t.eyebrow}</p>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.title}</h1>
-            <p className="text-lg md:text-xl mb-6 leading-relaxed max-w-2xl">{t.pitch}</p>
-            <div className="flex flex-wrap gap-2 md:gap-3 mb-8">
-              {t.chips.map((chip, idx) => (
-                <div key={idx} className={`${darkMode ? 'bg-gray-700 text-gray-200' : 'bg-gray-100 text-gray-800'} px-3 md:px-4 py-2 rounded-full text-xs md:text-sm font-medium flex items-center gap-2`}>
-                  <span>{chip.emoji}</span>
-                  <span>{chip.text}</span>
-                </div>
-              ))}
+        {/* ── House Rules ── */}
+        <section id="house">
+          <SectionHeader label={t.sections.house.label} title={t.sections.house.title} />
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Rules */}
+            <div className="p-5 rounded-2xl border" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
+              <h3 className="font-bold mb-4 flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
+                <span className="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-sm">📋</span>
+                {t.sections.rules}
+              </h3>
+              <ul className="space-y-2.5">
+                {t.rules.map((rule, i) => (
+                  <li key={i} className="text-sm leading-relaxed flex gap-2" style={{ color: 'var(--foreground)' }}>
+                    <span className="shrink-0 mt-0.5 w-4 h-4 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center text-[10px]">•</span>
+                    <span>{rule}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-
-            {/* Host Strip */}
-            <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-teal-50 border-teal-200'} border rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 transition-colors`}>
-              <div>
-                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? 'Anfitriã' : lang === 'en' ? 'Host' : 'Anfitriona'}</p>
-                <p className="text-lg font-semibold">{t.hostName}</p>
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <a href={`tel:${t.hostWhatsApp.replace(/\D/g, '')}`} className={`${darkMode ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' : 'bg-white text-teal-700 hover:bg-teal-50'} px-3 md:px-4 py-2 rounded-lg font-medium transition-all flex items-center gap-2 text-sm`}>
-                  <Phone className="w-4 h-4" /> {t.buttons.call}
-                </a>
-                <a href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`} className="bg-green-500 text-white px-3 md:px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-all flex items-center gap-2 text-sm">
-                  <MessageCircle className="w-4 h-4" /> {t.buttons.whatsapp}
-                </a>
+            {/* Tips */}
+            <div>
+              <h3 className="font-bold mb-4 flex items-center gap-2" style={{ fontFamily: 'var(--font-display)' }}>
+                <span className="w-7 h-7 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center text-sm">💡</span>
+                {t.sections.tips}
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                {t.tips.map((tip, i) => (
+                  <div key={i} className="p-3 rounded-xl border" style={{ background: 'var(--secondary)', borderColor: 'var(--border)' }}>
+                    <span className="text-xl block mb-1">{tip.emoji}</span>
+                    <p className="font-semibold text-xs mb-1">{tip.title}</p>
+                    <p className="text-[11px] leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>{tip.desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Booking Banner */}
-      <section className="bg-red-500 text-white py-6 md:py-8">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-base md:text-lg font-semibold text-center md:text-left">
-            {lang === 'pt' ? 'Pronto para sua próxima aventura em Manaus?' : lang === 'en' ? 'Ready for your next adventure in Manaus?' : '¿Listo para tu próxima aventura en Manaos?'}
-          </p>
-          <div className="flex gap-3 flex-wrap justify-center md:justify-end">
-            <a href="https://airbnb.com.br/rooms/1703136467602003248" className="bg-white text-red-500 px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all flex items-center gap-2 text-sm md:text-base">
-              {t.bookingCTA} <ExternalLink className="w-4 h-4" />
-            </a>
-            <a href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`} className="bg-green-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-green-600 transition-all flex items-center gap-2 text-sm md:text-base">
-              {t.directCTA} <MessageCircle className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Sections */}
-      <section className={`max-w-6xl mx-auto px-4 py-12 md:py-16 transition-colors`}>
-
-        {/* ── House Rules & Tips ── */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">{t.sections.house.title}</h2>
-          <p className={`text-lg mb-8 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{t.sections.house.intro}</p>
-
-          {/* Rules — plain text list */}
-          <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-amber-50 border-amber-200'} border rounded-xl p-6 mb-8`}>
-            <h3 className="text-xl font-bold mb-4">{t.sections.house.rulesTitle}</h3>
-            <ul className="space-y-3">
-              {t.sections.house.rules.map((rule, idx) => (
-                <li key={idx} className={`text-sm md:text-base leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  {rule}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Tips — small cards, lighter style */}
-          <h3 className="text-xl font-bold mb-4">{t.sections.house.tipsTitle}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {t.sections.house.tips.map((tip: any, idx: number) => (
-              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-teal-50 border-teal-100'} border rounded-lg p-4 transition-colors`}>
-                <p className="text-2xl mb-2">{tip.emoji}</p>
-                <p className="font-semibold text-sm mb-1">{tip.title}</p>
-                <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{tip.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        </section>
 
         {/* ── Pharmacies ── */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.pharmacies.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {establishments.pharmacies.map((item, idx) => (
-              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-teal-50 border-teal-200'} border rounded-xl p-6 transition-colors`}>
-                {renderCarousel(item.carousel)}
-                <p className="text-lg font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
-                <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? 'Delivery 24h disponível' : lang === 'en' ? '24h delivery available' : 'Entrega 24h disponible'}</p>
-                {renderButtons(item)}
-              </div>
-            ))}
+        <section id="farmacias">
+          <SectionHeader label={t.sections.pharmacies.label} title={t.sections.pharmacies.title} />
+          <div className="grid sm:grid-cols-2 gap-5">
+            {pharmacies.map(p => <PlaceCard key={p.id} place={p} lang={lang} accentColor="#1B6B47" />)}
           </div>
-        </div>
+        </section>
 
-        {/* ── Food & Gastronomia ── */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.food.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {establishments.food.map((item, idx) => (
-              <div key={idx} className={`${darkMode ? 'bg-gradient-to-br from-gray-800 to-gray-700 border-gray-700' : 'bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200'} border rounded-xl p-6 transition-colors`}>
-                {renderCarousel(item.carousel)}
-                <p className="text-lg font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
-                <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? 'Pertinho da casa — imperdível!' : lang === 'en' ? 'Close by — must try!' : '¡Cerca de casa — imprescindible!'}</p>
-                {renderButtons(item)}
-              </div>
-            ))}
+        {/* ── Food ── */}
+        <section id="gastronomia">
+          <SectionHeader label={t.sections.food.label} title={t.sections.food.title} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {food.map(p => <PlaceCard key={p.id} place={p} lang={lang} accentColor="#C9A84C" />)}
           </div>
-        </div>
+        </section>
 
-        {/* ── Feira de Quarta-feira ── */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-3">{t.sections.feira.title}</h2>
-          <div className={`${darkMode ? 'bg-green-900/30 border-green-800' : 'bg-green-50 border-green-200'} border rounded-xl p-4 mb-6 flex items-start gap-3`}>
-            <span className="text-2xl">📅</span>
-            <p className={`text-sm md:text-base leading-relaxed ${darkMode ? 'text-green-300' : 'text-green-800'}`}>{t.sections.feira.subtitle}</p>
+        {/* ── Bakery ── */}
+        <section id="padaria">
+          <SectionHeader label={t.sections.bakery.label} title={t.sections.bakery.title} />
+          <div className="grid sm:grid-cols-2 gap-5">
+            {bakery.map(p => <PlaceCard key={p.id} place={p} lang={lang} accentColor="#C9A84C" />)}
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {establishments.feira.map((item, idx) => (
-              <div key={idx} className={`${darkMode ? 'bg-gradient-to-br from-gray-800 to-gray-700 border-gray-700' : 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-200'} border rounded-xl p-5 transition-colors`}>
-                {renderCarousel(item.carousel)}
-                <p className="text-lg font-semibold mb-1">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
-                <p className={`text-xs leading-relaxed mb-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {lang === 'pt' ? item.desc_pt : lang === 'en' ? item.desc_en : item.desc_es}
-                </p>
-                {renderButtons(item)}
-              </div>
-            ))}
-          </div>
-        </div>
+        </section>
 
-        {/* ── Map Section ── */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 flex items-center gap-2">
-            <MapPin className="w-8 h-8 text-teal-700" />
-            {t.sections.location.title}
-          </h2>
-          <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-100 border-gray-200'} border rounded-xl overflow-hidden h-80 md:h-96 flex items-center justify-center transition-colors`}>
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-teal-700 mx-auto mb-4" />
-              <p className={`font-medium ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{lang === 'pt' ? 'Bairro Eldorado, Manaus - AM' : lang === 'en' ? 'Eldorado District, Manaus - AM' : 'Barrio Eldorado, Manaos - AM'}</p>
-              <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{lang === 'pt' ? '[Mapa em breve]' : lang === 'en' ? '[Map coming soon]' : '[Mapa próximamente]'}</p>
-              <a href="https://www.google.com/maps/search/Bairro+Eldorado+Manaus" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 bg-teal-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-teal-800 transition-all">
-                <MapPin className="w-4 h-4" /> {lang === 'pt' ? 'Ver no Google Maps' : lang === 'en' ? 'Open in Google Maps' : 'Ver en Google Maps'}
-              </a>
+        {/* ── Feira ── */}
+        <section id="feira">
+          <SectionHeader label={t.sections.feira.label} title={t.sections.feira.title} subtitle={t.sections.faeiraSub} />
+          {/* Banner */}
+          <div className="mb-6 p-4 rounded-xl border flex items-start gap-3" style={{ background: 'var(--secondary)', borderColor: 'var(--border)' }}>
+            <span className="text-2xl shrink-0">📅</span>
+            <div>
+              <p className="font-bold text-sm mb-0.5">{lang === 'pt' ? 'Toda Quarta-feira' : lang === 'en' ? 'Every Wednesday' : 'Todos los Miércoles'}</p>
+              <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+                {lang === 'pt' ? 'A partir das 16h — Praça do Caranguejo, Bairro Eldorado' : lang === 'en' ? 'From 4pm — Crab Square, Eldorado District' : 'Desde las 16h — Plaza del Cangrejo, Barrio Eldorado'}
+              </p>
             </div>
           </div>
-        </div>
-
-        {/* ── Tourist Attractions ── */}
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.attractions.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {establishments.attractions.map((item, idx) => (
-              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-blue-50 border-blue-200'} border rounded-xl p-6 transition-colors`}>
-                <p className="text-2xl font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
-                <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? item.info_pt : lang === 'en' ? item.info_en : item.info_es}</p>
-                {renderButtons(item)}
-              </div>
-            ))}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {feira.map(p => <PlaceCard key={p.id} place={p} lang={lang} accentColor="#1B6B47" />)}
           </div>
-        </div>
+        </section>
+
+        {/* ── Attractions ── */}
+        <section id="atrações">
+          <SectionHeader label={t.sections.attractions.label} title={t.sections.attractions.title} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {attractions.map(p => <PlaceCard key={p.id} place={p} lang={lang} accentColor="#4A1D6B" />)}
+          </div>
+        </section>
+
+        {/* ── Community Tourism ── */}
+        <section id="turismo-comunitario">
+          <SectionHeader label={t.sections.community.label} title={t.sections.community.title} subtitle={t.sections.communitySub} />
+          {/* Sustainability badge */}
+          <div className="mb-6 p-4 rounded-xl border flex items-start gap-3" style={{ background: 'rgba(27,107,71,0.07)', borderColor: 'rgba(27,107,71,0.25)' }}>
+            <span className="text-2xl shrink-0">🌱</span>
+            <p className="text-xs leading-relaxed" style={{ color: 'var(--foreground)' }}>
+              {lang === 'pt' ? 'Ao escolher o turismo de base comunitária, você contribui diretamente para a conservação da floresta amazônica e para a geração de renda das populações locais. Turismo responsável é o turismo que transforma.'
+                : lang === 'en' ? 'By choosing community-based tourism, you contribute directly to the conservation of the Amazon rainforest and to income generation for local communities. Responsible tourism is tourism that transforms.'
+                : 'Al elegir el turismo de base comunitaria, contribuyes directamente a la conservación de la selva amazónica y a la generación de ingresos para las comunidades locales. El turismo responsable es el turismo que transforma.'}
+            </p>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {communityTourism.map(p => <PlaceCard key={p.id} place={p} lang={lang} accentColor="#1B6B47" />)}
+          </div>
+        </section>
 
         {/* ── Transport ── */}
-        <div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.sections.transport.title}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {establishments.transport.map((item, idx) => (
-              <div key={idx} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-purple-50 border-purple-200'} border rounded-xl p-6 transition-colors`}>
-                <p className="text-2xl font-semibold">{item.emoji} {lang === 'pt' ? item.pt : lang === 'en' ? item.en : item.es}</p>
-                <p className={`text-sm mt-2 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{lang === 'pt' ? item.info_pt : lang === 'en' ? item.info_en : item.info_es}</p>
-                {renderButtons(item)}
-              </div>
-            ))}
+        <section id="transporte">
+          <SectionHeader label={t.sections.transport.label} title={t.sections.transport.title} />
+          <div className="grid sm:grid-cols-3 gap-5">
+            {transport.map(p => <PlaceCard key={p.id} place={p} lang={lang} />)}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Footer */}
-      <footer className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-900'} text-white py-12 border-t transition-colors`}>
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-lg font-semibold mb-4">
-            {lang === 'pt' ? 'Casa da Graça — Seu refúgio em Manaus' : lang === 'en' ? 'Casa da Graça — Your refuge in Manaus' : 'Casa da Graça — Tu refugio en Manaos'}
-          </p>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
-            <a href={`https://wa.me/${t.hostWhatsApp.replace(/\D/g, '')}`} className="bg-green-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-600 transition-all flex items-center gap-2">
-              <MessageCircle className="w-4 h-4" /> {t.buttons.whatsapp}
-            </a>
-            <a href="https://airbnb.com.br/rooms/1703136467602003248" className="bg-red-500 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-600 transition-all flex items-center gap-2">
-              <ExternalLink className="w-4 h-4" /> Airbnb
-            </a>
-          </div>
-          <div className={`${darkMode ? 'bg-gray-700' : 'bg-gray-800'} rounded-lg p-4 mb-6 transition-colors`}>
-            <p className="text-sm mb-2">{t.footer.credit} <span className="font-semibold text-teal-400">{t.footer.hub}</span></p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-3">
-              <a
-                href="https://hub.encontrodagua.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
-              >
-                <Globe className="w-3 h-3" /> {t.footer.smartCard}
-              </a>
-              <a
-                href={`https://wa.me/5541992557600?text=${encodeURIComponent(t.footer.hubWhatsAppMsg)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-full transition-all flex items-center gap-1.5"
-              >
-                <MessageCircle className="w-3 h-3" /> WhatsApp Hub
+        {/* ── Map ── */}
+        <section id="localizacao">
+          <SectionHeader label="" title={t.sections.location} />
+          <div className="rounded-2xl overflow-hidden border" style={{ borderColor: 'var(--border)' }}>
+            {/* OSM Embed iframe — gratuito, sem API key */}
+            <iframe
+              title="Localização da Casa da Graça — Bairro Eldorado, Manaus"
+              src="https://www.openstreetmap.org/export/embed.html?bbox=-60.0800%2C-3.1100%2C-60.0400%2C-3.0800&layer=mapnik&marker=-3.0950%2C-60.0600"
+              width="100%"
+              height="320"
+              style={{ border: 0, display: 'block' }}
+              loading="lazy"
+              allowFullScreen
+            />
+            <div className="p-4 flex items-center justify-between" style={{ background: 'var(--secondary)', borderTop: '1px solid var(--border)' }}>
+              <div className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 shrink-0" style={{ color: 'var(--primary)' }} />
+                <div>
+                  <p className="font-semibold text-sm">Bairro Eldorado, Manaus – AM</p>
+                  <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+                    {lang === 'pt' ? 'Mapa OpenStreetMap — gratuito e colaborativo' : lang === 'en' ? 'OpenStreetMap — free and collaborative' : 'OpenStreetMap — gratuito y colaborativo'}
+                  </p>
+                </div>
+              </div>
+              <a href="https://www.google.com/maps/search/Bairro+Eldorado+Manaus+AM" target="_blank" rel="noopener noreferrer" className="btn-primary text-xs">
+                <MapPin className="w-3 h-3" /> {t.mapBtn}
               </a>
             </div>
           </div>
-          <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{t.footer.rights}</p>
+        </section>
+
+      </main>
+
+      {/* ── Footer ───────────────────────────────────────────────────────────── */}
+      <footer className="border-t pb-safe-bar" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>
+        <div className="container py-10">
+          {/* Top */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8 pb-8 border-b" style={{ borderColor: 'var(--border)' }}>
+            <div>
+              <h2 className="text-2xl font-bold mb-1" style={{ fontFamily: 'var(--font-display)' }}>Casa da Graça</h2>
+              <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>{t.footer.tagline}</p>
+            </div>
+            <div className="flex gap-2 flex-wrap justify-center md:justify-end">
+              <a href={`tel:${HOST_WA}`} className="btn-outline gap-2"><Phone className="w-4 h-4" /> {t.call}</a>
+              <a href={`https://wa.me/${HOST_WA}`} target="_blank" rel="noopener noreferrer" className="btn-whatsapp"><MessageCircle className="w-4 h-4" /> {t.whatsapp}</a>
+              <a href="https://airbnb.com.br/rooms/1703136467602003248" target="_blank" rel="noopener noreferrer" className="btn-airbnb"><ExternalLink className="w-4 h-4" /> Airbnb</a>
+            </div>
+          </div>
+          {/* Hub credit */}
+          <div className="p-5 rounded-2xl border text-center mb-6" style={{ background: 'var(--secondary)', borderColor: 'var(--border)' }}>
+            <p className="text-sm mb-3" style={{ color: 'var(--muted-foreground)' }}>
+              {t.footer.credit} <span className="font-bold" style={{ color: 'var(--primary)' }}>{t.footer.hub}</span>
+            </p>
+            <div className="flex items-center justify-center gap-2 flex-wrap">
+              <a href="https://hub.encontrodagua.com/" target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full text-white transition-all"
+                style={{ background: 'linear-gradient(135deg,#4A1D6B,#6B3A8F)' }}>
+                <Globe className="w-3.5 h-3.5" /> {t.footer.hubCTA}
+              </a>
+              <a href={`https://wa.me/5541992557600?text=${encodeURIComponent(t.footer.hubWAMsg)}`} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold px-4 py-2 rounded-full text-white transition-all"
+                style={{ background: 'linear-gradient(135deg,#25D366,#128C7E)' }}>
+                <MessageCircle className="w-3.5 h-3.5" /> {t.footer.hubWA}
+              </a>
+            </div>
+          </div>
+          {/* Copyright */}
+          <p className="text-center text-xs" style={{ color: 'var(--muted-foreground)' }}>
+            {t.footer.rights} · <a href="https://hub.encontrodagua.com" target="_blank" rel="noopener noreferrer" className="hover:underline">hub.encontrodagua.com</a>
+          </p>
         </div>
       </footer>
+
+      {/* ── Fixed CTAs (mobile) ───────────────────────────────────────────────── */}
+      <QuickContacts lang={lang} hostWhatsApp={HOST_WA} />
+
+      {/* ── guIA Chat Widget ─────────────────────────────────────────────────── */}
+      <GuiaWidget lang={lang} darkMode={darkMode} />
+
     </div>
   );
 }

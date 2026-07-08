@@ -162,26 +162,89 @@ O Guia Digital da Casa da Graça é uma SPA (Single Page Application) trilíngue
 
 ---
 
-## 🔮 Próximas Versões Planejadas
+### [v1.0.0] — 2026-07-07 | Redesign Boutique Completo (Estilo Airbnb + TripAdvisor)
+**Responsável:** Hub Encontro d'Água (Antigravity AI)
+**Estratégia:** Zero custo de API — Gemini 1.5 Flash (gratuito) + Wikimedia Commons (CC) + OpenStreetMap
 
-### [v0.7.0] — Links Diretos Google Maps
-- [ ] Adicionar URLs do Google My Business de cada estabelecimento
-- [ ] Embed do mapa do bairro Eldorado
+#### 🎨 Design System — Tema Açaí Amazônico
+- ✅ Paleta Açaí: roxo profundo `#4A1D6B` + dourado amazônico `#C9A84C` + verde floresta `#1B6B47`
+- ✅ Tipografia premium: **Fraunces** (display/títulos) + **Inter** (corpo) via Google Fonts
+- ✅ Glassmorphism: `backdrop-filter: blur(20px)` com bordas semi-transparentes
+- ✅ Dark mode completo com toggle persistente no localStorage
+- ✅ Micro-animações: `fadeInUp`, `shimmer` skeleton, `pulseGlow` no FAB da guIA
+- ✅ Modo mobile-first: scrollbar customizada, `pb-safe-bar` para devices iOS
 
-### [v0.8.0] — Fotos Pendentes
-- [ ] Farmácias (Drogasil, Drogaria Santo Remédio)
-- [ ] Gastronomia (Praça do Caranguejo, Assados Hango, Banca de Café)
-- [ ] Otimizar imagens (WebP, lazy loading)
+#### 🏗️ Arquitetura — Componentes Criados
+| Componente | Descrição |
+|---|---|
+| `HeroCarousel.tsx` | Embla carousel com autoplay 4,5s, dots, arrows, placeholder gradiente açaí |
+| `PlaceCard.tsx` | Card estilo TripAdvisor: foto multi-slide, tags, tip box, botões de ação |
+| `QuickContacts.tsx` | Barra fixa mobile: Ligar / WhatsApp / Airbnb |
+| `GuiaWidget.tsx` | Chat FAB Gemini: histórico, markdown bold, fallback sem API |
+| `index.css` | Design system completo (300+ linhas, tokens, utilities, animações) |
 
-### [v0.9.0] — Informações Pendentes (TODO_REFINEMENTS)
-- [ ] Links Drogasil, Santo Remédio, Assados Hango
-- [ ] Links Teatro Amazonas, MUSA, Ponta Negra
-- [ ] Mercadinhos e Shoppings
+#### 📦 Dados — `client/src/data/places.ts`
+- ✅ 22 locais catalogados com i18n (PT/EN/ES) em uma única fonte de dados
+- ✅ Fotos do Wikimedia Commons (CC, sem API key) para atrações turísticas
+- ✅ Turismo comunitário: RDS Tupé, Tumbira, Novo Airão, Lago Janauari, Museu do Índio, Sateré-Mawé
+- ✅ Contatos reais verificados: SEMMAS, FEPIAM, SandAdventure, Pousada do Garrido, Restaurante Selva Amazônica
 
-### [v1.0.0] — Release Final
-- [ ] Todos os links diretos
-- [ ] Testes mobile e desktop completos
-- [ ] SEO e meta tags revisados
+#### 🤖 guIA — Concierge Digital (Gemini 1.5 Flash)
+- ✅ `api/guia-chat.ts` — endpoint Vercel serverless (Node 20)
+- ✅ System prompt completo: regras, bairro, atrações, turismo comunitário, dicas práticas
+- ✅ Histórico de conversa (últimas 10 mensagens para budget de tokens)
+- ✅ Fallback gracioso quando sem `GEMINI_API_KEY`: mostra WhatsApp da Graça
+- ✅ Configuração: `GEMINI_API_KEY=<sua-chave-gratuita>` no painel Vercel
+
+#### 🗺️ Mapa — OpenStreetMap (gratuito, sem API key)
+- ✅ Embed OSM iframe no bairro Eldorado, Manaus
+- ✅ Botão "Abrir no Google Maps" (link direto, gratuito)
+
+#### 🏠 Home.tsx — Novo Fluxo de Seções
+1. Hero Carousel + cabeçalho com chips de localização
+2. Booking Banner (Airbnb + WhatsApp direto)
+3. Regras da Casa + Dicas Práticas (grid 2 colunas)
+4. Farmácias 24h
+5. Gastronomia Amazônica
+6. Padaria & Delivery (Empório do Pão)
+7. Feira de Quarta-feira (Praça do Caranguejo)
+8. Pontos Turísticos (com fotos Wikimedia Commons)
+9. **NOVO** Turismo de Base Comunitária Amazônica
+10. Transporte
+11. Mapa OpenStreetMap
+12. Rodapé Hub Encontro d'Água (site + WhatsApp com mensagem pré-preenchida)
+
+#### 📸 Estratégia de Fotos (Zero Custo)
+| Tipo de Local | Fonte |
+|---|---|
+| Atrações turísticas | Wikimedia Commons (URL direto, CC, gratuito) |
+| Turismo comunitário | Wikimedia Commons (representativos) |
+| Estabelecimentos locais | Placeholders gradiente açaí (fotos da Lídi a serem inseridas) |
+| Casa da Graça | Fotos já salvas em `/public/fotos/casa/` |
+
+#### 🛠️ Infra — vercel.json atualizado
+- ✅ Suporte a serverless functions `api/*.ts` com runtime Node 20
+- ✅ Rewrites: `/api/*` → functions, `/*` → SPA
+- ✅ Cache headers: assets estáticos com `max-age=31536000, immutable`
+
+**Pendente pós-deploy:**
+- [ ] Adicionar `GEMINI_API_KEY` no painel Vercel (Environment Variables)
+- [ ] Substituir placeholders pelas fotos da Lídi seguindo o `FOTOS_GUIA.md`
+- [ ] Testar guIA chat em produção após adicionar a chave Gemini
+
+---
+
+## 🔮 Próximos Passos
+
+### [v1.1.0] — Fotos Reais + Gemini Ativado
+- [ ] Lídi envia fotos → substituir placeholders (nomes já documentados em FOTOS_GUIA.md)
+- [ ] Adicionar GEMINI_API_KEY no painel Vercel → ativar guIA
+- [ ] Testar chat widget em produção (PT/EN/ES)
+
+### [v1.2.0] — Enriquecimento de Conteúdo
+- [ ] Adicionar horários e preços nas farmácias (verificar in loco)
+- [ ] Expandir seção de transporte com informações de ônibus
+- [ ] Adicionar shoppings da zona sul (Manaus Shopping, Sumaúma, Studio 5)
 
 ---
 
