@@ -49,8 +49,8 @@ export const pharmacies: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Drogasil_fachada.jpg/800px-Drogasil_fachada.jpg',
-        alt: 'Drogasil — fachada da loja',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Drogasil_logo.png',
+        alt: 'Drogasil — farmácia 24h',
         credit: 'Wikimedia Commons',
       },
     ],
@@ -68,8 +68,8 @@ export const pharmacies: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Farmacia_Popular_do_Brasil.jpg/800px-Farmacia_Popular_do_Brasil.jpg',
-        alt: 'Drogaria Santo Remédio — farmácia do bairro',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG',
+        alt: 'Farmácia Santo Remédio — farmácia local de confiança',
         credit: 'Wikimedia Commons',
       },
     ],
@@ -91,18 +91,18 @@ export const food: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tacacá_manaus.jpg/800px-Tacacá_manaus.jpg',
-        alt: 'Gastronomia amazônica — tacacá',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Tacac%C3%A1_de_Manaus.jpg/500px-Tacac%C3%A1_de_Manaus.jpg',
+        alt: 'Tacacá — prato típico de Manaus',
         credit: 'Wikimedia Commons',
       },
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Caldeirada_de_Peixe.jpg/800px-Caldeirada_de_Peixe.jpg',
-        alt: 'Caldeirada de peixe amazônica',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Tacaca.png/800px-Tacaca.png',
+        alt: 'Tacacá amazônico',
         credit: 'Wikimedia Commons',
       },
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Caranguejo_ucides_cordatus.jpg/800px-Caranguejo_ucides_cordatus.jpg',
-        alt: 'Caranguejo fresco — especialidade da Praça',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG',
+        alt: 'Café regional na Praça do Caranguejo',
         credit: 'Wikimedia Commons',
       },
     ],
@@ -120,7 +120,7 @@ export const food: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Churrasco_gaucho.jpg/800px-Churrasco_gaucho.jpg',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Churrasco_brasileiro.jpg/800px-Churrasco_brasileiro.jpg',
         alt: 'Assados Hango — churrasco artesanal',
         credit: 'Wikimedia Commons',
       },
@@ -144,8 +144,8 @@ export const food: Place[] = [
         credit: 'Wikimedia Commons',
       },
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Tapioca_recheada.jpg/800px-Tapioca_recheada.jpg',
-        alt: 'Tapioca recheada — café da manhã típico do Norte',
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Tacac%C3%A1_de_Manaus.jpg/500px-Tacac%C3%A1_de_Manaus.jpg',
+        alt: 'Culinária regional amazona — experiência gastronômica',
         credit: 'Wikimedia Commons',
       },
     ],
