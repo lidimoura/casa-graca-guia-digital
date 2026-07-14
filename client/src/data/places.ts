@@ -48,7 +48,11 @@ export const pharmacies: Place[] = [
       maps: 'https://www.google.com/maps/search/Drogasil+Eldorado+Manaus',
     },
     photos: [
-      { url: '', alt: 'Drogasil', isPlaceholder: true },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Drogasil_fachada.jpg/800px-Drogasil_fachada.jpg',
+        alt: 'Drogasil — fachada da loja',
+        credit: 'Wikimedia Commons',
+      },
     ],
     tags: ['24h', 'Delivery'],
     pt: { name: 'Drogasil', tagline: 'Farmácia 24h com delivery', description: 'Farmácia com atendimento 24 horas, delivery disponível e amplo estoque de medicamentos, perfumaria e produtos de saúde.' },
@@ -63,7 +67,11 @@ export const pharmacies: Place[] = [
       maps: 'https://www.google.com/maps/search/Drogaria+Santo+Rem%C3%A9dio+Manaus',
     },
     photos: [
-      { url: '', alt: 'Drogaria Santo Remédio', isPlaceholder: true },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Farmacia_Popular_do_Brasil.jpg/800px-Farmacia_Popular_do_Brasil.jpg',
+        alt: 'Drogaria Santo Remédio — farmácia do bairro',
+        credit: 'Wikimedia Commons',
+      },
     ],
     tags: ['Delivery', 'Manipulação'],
     pt: { name: 'Drogaria Santo Remédio', tagline: 'Farmácia local de confiança', description: 'Farmácia tradicional do bairro com atendimento personalizado, delivery e manipulação de medicamentos.' },
@@ -82,9 +90,21 @@ export const food: Place[] = [
       maps: 'https://www.google.com/maps/search/Pra%C3%A7a+do+Caranguejo+Manaus',
     },
     photos: [
-      { url: '', alt: 'Praça do Caranguejo - ambiente', isPlaceholder: true },
-      { url: '', alt: 'Praça do Caranguejo - pratos', isPlaceholder: true },
-      { url: '', alt: 'Praça do Caranguejo - noite', isPlaceholder: true },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Tacacá_manaus.jpg/800px-Tacacá_manaus.jpg',
+        alt: 'Gastronomia amazônica — tacacá',
+        credit: 'Wikimedia Commons',
+      },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Caldeirada_de_Peixe.jpg/800px-Caldeirada_de_Peixe.jpg',
+        alt: 'Caldeirada de peixe amazônica',
+        credit: 'Wikimedia Commons',
+      },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Caranguejo_ucides_cordatus.jpg/800px-Caranguejo_ucides_cordatus.jpg',
+        alt: 'Caranguejo fresco — especialidade da Praça',
+        credit: 'Wikimedia Commons',
+      },
     ],
     tags: ['Almoço & Jantar', 'Ao Ar Livre', '🗓️ Feira Qua'],
     pt: { name: 'Praça do Caranguejo', tagline: 'O coração gastronômico do Eldorado', description: 'Praça de alimentação a céu aberto com especialidades amazônicas — caranguejo, caldeirada, tacacá e muito mais. Às quartas-feiras vira palco de uma feira regional imperdível.', tip: 'Às quartas-feiras tem feira com produtos regionais incríveis!' },
@@ -99,8 +119,11 @@ export const food: Place[] = [
       maps: 'https://www.google.com/maps/search/Assados+Hango+Manaus',
     },
     photos: [
-      { url: '', alt: 'Assados Hango - churrasco', isPlaceholder: true },
-      { url: '', alt: 'Assados Hango - ambiente', isPlaceholder: true },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Churrasco_gaucho.jpg/800px-Churrasco_gaucho.jpg',
+        alt: 'Assados Hango — churrasco artesanal',
+        credit: 'Wikimedia Commons',
+      },
     ],
     tags: ['Churrasco', 'Almoço & Jantar'],
     pt: { name: 'Assados Hango', tagline: 'Churrasco artesanal no Eldorado', description: 'Churrasqueria artesanal com cortes selecionados, ambiente agradável e preços justos. Um clássico do bairro Eldorado.' },
@@ -115,8 +138,16 @@ export const food: Place[] = [
       maps: 'https://www.google.com/maps/search/Caf%C3%A9+Regional+Manaus+Eldorado',
     },
     photos: [
-      { url: '', alt: 'Banca de Café Regional', isPlaceholder: true },
-      { url: '', alt: 'Café Regional - bebidas', isPlaceholder: true },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG',
+        alt: 'Café regional amazônico',
+        credit: 'Wikimedia Commons',
+      },
+      {
+        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Tapioca_recheada.jpg/800px-Tapioca_recheada.jpg',
+        alt: 'Tapioca recheada — café da manhã típico do Norte',
+        credit: 'Wikimedia Commons',
+      },
     ],
     tags: ['Café', 'Manhã'],
     pt: { name: 'Banca de Café Regional', tagline: 'Café da Amazônia todo dia', description: 'Banca especializada em café regional amazônico, cuscuz, tapioca e lanches típicos do Norte. O melhor começo de manhã em Manaus.' },

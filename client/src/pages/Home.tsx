@@ -4,6 +4,7 @@ import { HeroCarousel } from '../components/HeroCarousel';
 import { QuickContacts } from '../components/QuickContacts';
 import { PlaceCard } from '../components/PlaceCard';
 import { GuiaWidget } from '../components/GuiaWidget';
+import { ProvasSocial } from '../components/ProvasSocial';
 import {
   pharmacies, food, bakery, feira, attractions, communityTourism, transport,
 } from '../data/places';
@@ -421,6 +422,11 @@ export default function Home() {
         </section>
 
       </main>
+
+      {/* ── Prova Social ──────────────────────────────────────────────────────── */}
+      <div className="border-t" style={{ borderColor: 'var(--border)' }}>
+        <ProvasSocial />
+      </div>
 
       {/* ── Footer ───────────────────────────────────────────────────────────── */}
       <footer className="border-t pb-safe-bar" style={{ background: 'var(--card)', borderColor: 'var(--border)' }}>

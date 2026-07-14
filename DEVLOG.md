@@ -22,6 +22,49 @@ O Guia Digital da Casa da Graça é uma SPA (Single Page Application) trilíngue
 
 ---
 
+### [v1.2.0] — 2026-07-14 | Sistema de Avaliações + Fotos Reais + guIA Fix
+**Responsável:** Hub Encontro d'Água (Antigravity AI)
+
+**O que foi feito:**
+
+#### 🌟 Sistema de Avaliações (Prova Social)
+- Nova página `/avaliar` com formulário de avaliação estilo Airbnb (estrelas 1–5, nome, título, descrição)
+- Painel admin em `/avaliar?admin=prosperidade7*7` para aprovar/rejeitar reviews
+- Componente `ProvasSocial` na Home: carousel horizontal com reviews aprovadas, média de estrelas
+- Estado "Em breve" enquanto não houver avaliações, com CTA para `/avaliar`
+- API serverless `/api/reviews` via JSONBin.io (free tier: GET/POST/PATCH)
+- Rota `/avaliar` adicionada ao `App.tsx`
+
+**Setup necessário (1x):**
+1. Criar conta em jsonbin.io → New Bin com `{"reviews":[]}` → copiar Bin ID
+2. Account → API Keys → copiar Master Key
+3. Vercel → Environment Variables → `JSONBIN_BIN_ID` + `JSONBIN_API_KEY`
+
+#### 🤖 guIA — Fix Crítico
+- `api/guia-chat.ts` reescrito com validação de formato da chave (`AIza...`)
+- Retorna mensagem de erro descritiva ao invés de 500 genérico
+- Passthrough do erro real da API Gemini para debug
+- **⚠️ AÇÃO NECESSÁRIA:** A chave `AQ.Ab8R...` no Vercel está com formato errado.
+  Acesse `aistudio.google.com/app/apikey` → Create API Key → chave começa com `AIza`
+
+#### 📸 Fotos Reais (sem API paga)
+- HeroCarousel: 8 fotos reais da casa conectadas (`/fotos/casa/`)
+- Empório do Pão: 5 fotos locais conectadas (`/fotos/padaria/`)
+- Feira de Quarta: 11 fotos locais conectadas para 5 barracas (`/fotos/feira/`)
+- Farmácias: Fotos Wikimedia Commons (CC0)
+- Praça do Caranguejo: 3 fotos Wikimedia de gastronomia amazônica
+- Assados Hango: Foto Wikimedia de churrasco
+- Banca de Café Regional: Fotos Wikimedia de café + tapioca
+- **Aguardando:** fotos da Praça do Caranguejo e banca de café da própria cliente
+
+#### 🚀 Deploy Fixes (npm vs pnpm)
+- Removido `pnpm-lock.yaml` do repositório
+- Removido `"packageManager": "pnpm"` do `package.json`
+- Adicionado `.npmrc` com `legacy-peer-deps=true`
+- `vercel.json` simplificado com `installCommand: "npm install --legacy-peer-deps"`
+
+---
+
 ### [v0.1.0] — 2026-07-02 | Setup Inicial
 **Responsável:** Hub Encontro d'Água (Antigravity AI)
 
