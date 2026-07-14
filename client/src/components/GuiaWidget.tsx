@@ -1,15 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, Loader2, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Loader2 } from 'lucide-react';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  isError?: boolean;
 }
 
 interface GuiaWidgetProps {
   lang: string;
   darkMode: boolean;
 }
+
+const GRACA_WA  = '5592982559002';
+const LIDI_WA   = '5541992557600';
+const GRACA_MSG = 'Olá Graça! Estou hospedado(a) na Casa da Graça e preciso de ajuda 🌿';
+const LIDI_MSG  = 'Olá Lídi! Vim pelo Guia Digital da Casa da Graça e gostaria de saber mais sobre turismo comunitário na Amazônia 🌿';
 
 const greetings = {
   pt: 'Olá! Sou a **guIA**, sua concierge digital da Casa da Graça 🌿\n\nPosso te ajudar com:\n• Regras e serviços da casa\n• Dicas de restaurantes e atrações em Manaus\n• Turismo de base comunitária na Amazônia\n• O que fazer no bairro Eldorado\n\nComo posso te ajudar?',
@@ -23,31 +29,61 @@ const placeholders = {
   es: 'Pregunta sobre la casa o Manaos...',
 };
 
-const sendLabels = { pt: 'Enviar', en: 'Send', es: 'Enviar' };
-const openLabels = { pt: 'Falar com guIA', en: 'Talk to guIA', es: 'Hablar con guIA' };
+// WhatsApp quick-contact bar labels
+const waLabels = {
+  pt: { graca: '💬 Graça (anfitriã)', lidi: '🌿 Lídi (turismo comunitário)' },
+  en: { graca: '💬 Graça (host)', lidi: '🌿 Lídi (community tourism)' },
+  es: { graca: '💬 Graça (anfitriona)', lidi: '🌿 Lídi (turismo comunitario)' },
+};
 
-// Simple markdown renderer for bold and line breaks
+// Simple markdown renderer for **bold** and line breaks
 function renderContent(text: string) {
-  const lines = text.split('\n');
-  return lines.map((line, i) => {
+  return text.split('\n').map((line, i, arr) => {
     const parts = line.split(/\*\*(.*?)\*\*/g);
     return (
       <span key={i}>
         {parts.map((p, j) => j % 2 === 1 ? <strong key={j}>{p}</strong> : p)}
-        {i < lines.length - 1 && <br />}
+        {i < arr.length - 1 && <br />}
       </span>
     );
   });
 }
 
+// WhatsApp shortcut buttons shown inside the chat
+function WAButtons({ lang }: { lang: string }) {
+  const labels = waLabels[lang as keyof typeof waLabels] || waLabels.pt;
+  return (
+    <div className="flex flex-col gap-1.5 mt-2">
+      <a
+        href={`https://wa.me/${GRACA_WA}?text=${encodeURIComponent(GRACA_MSG)}`}
+        target="_blank" rel="noopener noreferrer"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-white transition-all hover:opacity-90"
+        style={{ background: 'linear-gradient(135deg,#25D366,#128C7E)' }}
+      >
+        <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" />
+        {labels.graca}
+      </a>
+      <a
+        href={`https://wa.me/${LIDI_WA}?text=${encodeURIComponent(LIDI_MSG)}`}
+        target="_blank" rel="noopener noreferrer"
+        className="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-white transition-all hover:opacity-90"
+        style={{ background: 'linear-gradient(135deg,#4A1D6B,#6B3A8F)' }}
+      >
+        <MessageCircle className="w-3.5 h-3.5 flex-shrink-0" />
+        {labels.lidi}
+      </a>
+    </div>
+  );
+}
+
 export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]         = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { role: 'assistant', content: greetings[lang as keyof typeof greetings] || greetings.pt },
   ]);
-  const [input, setInput] = useState('');
+  const [input,   setInput]   = useState('');
   const [loading, setLoading] = useState(false);
-  const [hasKey, setHasKey] = useState(true); // assume true, fail gracefully
+  const [apiError, setApiError] = useState<string | null>(null); // stores real error hint
   const bottomRef = useRef<HTMLDivElement>(null);
 
   // Update greeting when lang changes (only if no user messages yet)
@@ -65,10 +101,10 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
     const text = input.trim();
     if (!text || loading) return;
 
-    const userMsg: Message = { role: 'user', content: text };
-    setMessages(prev => [...prev, userMsg]);
+    setMessages(prev => [...prev, { role: 'user', content: text }]);
     setInput('');
     setLoading(true);
+    setApiError(null);
 
     try {
       const res = await fetch('/api/guia-chat', {
@@ -77,34 +113,48 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
         body: JSON.stringify({
           message: text,
           lang,
-          history: messages.map(m => ({ role: m.role, parts: [{ text: m.content }] })),
+          history: messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] })),
         }),
       });
 
-      if (res.status === 404 || res.status === 501) {
-        // No API configured
-        setHasKey(false);
-        throw new Error('no-api');
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        // Surface the real error message from the API
+        const hint    = data?.hint    || '';
+        const errMsg  = data?.error   || '';
+        const geminiMsg = data?.geminiMessage || '';
+        const preview = data?.keyPreview || '';
+
+        // Build user-friendly message
+        let friendlyMsg = '';
+
+        if (res.status === 501) {
+          // Key missing or wrong format
+          friendlyMsg = `⚠️ **Chave da guIA inválida.** ${hint || errMsg}${preview ? `\n\n🔑 Início da chave atual: \`${preview}\`` : ''}\n\nEnquanto isso, fale diretamente:`;
+        } else if (res.status === 502) {
+          // Gemini returned error
+          friendlyMsg = `⚠️ **Erro na API Gemini** (${res.status}).\n${geminiMsg || errMsg}\n\nEnquanto isso, fale diretamente:`;
+        } else {
+          friendlyMsg = `⚠️ **Erro ${res.status}**: ${errMsg || 'Tente novamente.'}\n\nEnquanto isso, fale diretamente:`;
+        }
+
+        setApiError(friendlyMsg);
+        setMessages(prev => [...prev, { role: 'assistant', content: friendlyMsg, isError: true }]);
+        return;
       }
 
-      const data = await res.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response || '...' }]);
+      const response = data?.response || '...';
+      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+
     } catch (err: any) {
-      if (err.message === 'no-api' || !hasKey) {
-        const noApiMsg = {
-          pt: '⚙️ A guIA ainda está sendo configurada. Enquanto isso, entre em contato diretamente com a Graça pelo WhatsApp: **+55 92 98255-9002**',
-          en: '⚙️ guIA is still being set up. In the meantime, contact Graça directly on WhatsApp: **+55 92 98255-9002**',
-          es: '⚙️ La guIA todavía se está configurando. Mientras tanto, contacta a Graça directamente por WhatsApp: **+55 92 98255-9002**',
-        };
-        setMessages(prev => [...prev, { role: 'assistant', content: noApiMsg[lang as keyof typeof noApiMsg] || noApiMsg.pt }]);
-      } else {
-        const errMsg = {
-          pt: 'Desculpa, tive um problema ao responder. Tente novamente ou contate a Graça pelo WhatsApp.',
-          en: 'Sorry, I had a problem answering. Please try again or contact Graça via WhatsApp.',
-          es: 'Lo siento, tuve un problema al responder. Inténtalo de nuevo o contacta a Graça por WhatsApp.',
-        };
-        setMessages(prev => [...prev, { role: 'assistant', content: errMsg[lang as keyof typeof errMsg] || errMsg.pt }]);
-      }
+      const msg = lang === 'en'
+        ? '⚠️ Connection error. Please try again or contact us directly:'
+        : lang === 'es'
+        ? '⚠️ Error de conexión. Inténtalo de nuevo o contáctanos directamente:'
+        : '⚠️ Erro de conexão. Tente novamente ou fale diretamente:';
+      setApiError(msg);
+      setMessages(prev => [...prev, { role: 'assistant', content: msg, isError: true }]);
     } finally {
       setLoading(false);
     }
@@ -125,24 +175,26 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
           aria-label="Abrir concierge guIA"
         >
           <Bot className="w-5 h-5" />
-          <span className="hidden sm:inline">{openLabels[lang as keyof typeof openLabels] || openLabels.pt}</span>
+          <span className="hidden sm:inline">
+            {lang === 'en' ? 'Talk to guIA' : lang === 'es' ? 'Hablar con guIA' : 'Falar com guIA'}
+          </span>
         </button>
       )}
 
       {/* ── Chat Window ── */}
       {open && (
         <div
-          className={`fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50 flex flex-col rounded-2xl shadow-2xl overflow-hidden animate-fade-in`}
+          className="fixed bottom-20 right-4 md:bottom-6 md:right-6 z-50 flex flex-col rounded-2xl shadow-2xl overflow-hidden animate-fade-in"
           style={{
-            width: 'min(360px, calc(100vw - 2rem))',
-            height: 'min(480px, calc(100vh - 10rem))',
+            width: 'min(370px, calc(100vw - 2rem))',
+            height: 'min(520px, calc(100vh - 10rem))',
             background: darkMode ? 'rgba(26,10,46,0.97)' : 'rgba(255,255,255,0.97)',
             backdropFilter: 'blur(20px)',
             border: '1px solid rgba(74,29,107,0.20)',
           }}
         >
           {/* Header */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b" style={{ borderColor: 'var(--border)', background: 'linear-gradient(135deg,#4A1D6B,#6B3A8F)' }}>
+          <div className="flex items-center gap-3 px-4 py-3 border-b shrink-0" style={{ borderColor: 'var(--border)', background: 'linear-gradient(135deg,#4A1D6B,#6B3A8F)' }}>
             <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center shrink-0">
               <Bot className="w-5 h-5 text-white" />
             </div>
@@ -164,20 +216,28 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
                     <Bot className="w-3.5 h-3.5 text-white" />
                   </div>
                 )}
-                <div
-                  className="max-w-[82%] px-3 py-2 rounded-2xl text-xs leading-relaxed"
-                  style={{
-                    background: msg.role === 'user'
-                      ? 'linear-gradient(135deg,#4A1D6B,#6B3A8F)'
-                      : darkMode ? 'rgba(255,255,255,0.07)' : 'rgba(74,29,107,0.06)',
-                    color: msg.role === 'user' ? 'white' : 'var(--foreground)',
-                    borderRadius: msg.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '0.25rem 1rem 1rem 1rem',
-                  }}
-                >
-                  {renderContent(msg.content)}
+                <div className="max-w-[82%]">
+                  <div
+                    className="px-3 py-2 rounded-2xl text-xs leading-relaxed"
+                    style={{
+                      background: msg.role === 'user'
+                        ? 'linear-gradient(135deg,#4A1D6B,#6B3A8F)'
+                        : msg.isError
+                        ? (darkMode ? 'rgba(255,200,0,0.08)' : 'rgba(255,160,0,0.08)')
+                        : darkMode ? 'rgba(255,255,255,0.07)' : 'rgba(74,29,107,0.06)',
+                      color: msg.role === 'user' ? 'white' : 'var(--foreground)',
+                      borderRadius: msg.role === 'user' ? '1rem 1rem 0.25rem 1rem' : '0.25rem 1rem 1rem 1rem',
+                      border: msg.isError ? '1px solid rgba(255,160,0,0.25)' : 'none',
+                    }}
+                  >
+                    {renderContent(msg.content)}
+                  </div>
+                  {/* Show WhatsApp buttons after error messages */}
+                  {msg.isError && <WAButtons lang={lang} />}
                 </div>
               </div>
             ))}
+
             {loading && (
               <div className="flex justify-start items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#4A1D6B] to-[#6B3A8F] flex items-center justify-center shrink-0">
@@ -191,8 +251,16 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
             <div ref={bottomRef} />
           </div>
 
+          {/* WhatsApp Quick Contacts — always visible at bottom of messages */}
+          <div className="px-3 py-2 border-t shrink-0" style={{ borderColor: 'var(--border)', background: darkMode ? 'rgba(255,255,255,0.03)' : 'rgba(74,29,107,0.03)' }}>
+            <p className="text-[10px] mb-1.5 opacity-50">
+              {lang === 'en' ? '📞 Direct contact:' : lang === 'es' ? '📞 Contacto directo:' : '📞 Contato direto:'}
+            </p>
+            <WAButtons lang={lang} />
+          </div>
+
           {/* Input */}
-          <div className="px-3 py-3 border-t" style={{ borderColor: 'var(--border)' }}>
+          <div className="px-3 py-2.5 border-t shrink-0" style={{ borderColor: 'var(--border)' }}>
             <div className="flex gap-2">
               <textarea
                 value={input}
@@ -211,7 +279,7 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
               <button
                 onClick={sendMessage}
                 disabled={!input.trim() || loading}
-                aria-label={sendLabels[lang as keyof typeof sendLabels]}
+                aria-label="Enviar"
                 className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all disabled:opacity-40"
                 style={{ background: 'linear-gradient(135deg,#4A1D6B,#6B3A8F)', color: 'white' }}
               >
@@ -219,7 +287,7 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
               </button>
             </div>
             <p className="text-[10px] text-center mt-1.5" style={{ color: 'var(--muted-foreground)' }}>
-              Powered by Gemini · Hub Encontro d'Água
+              guIA · Powered by Gemini · Hub Encontro d'Água
             </p>
           </div>
         </div>
