@@ -149,15 +149,15 @@ export const food: Place[] = [
     emoji: '🍽️',
     category: 'food',
     contact: {
-      maps: 'https://www.google.com/maps/search/Beco+Restaurante+Manaus',
+      maps: 'https://www.google.com/maps/search/O+Beco+Bar+Rua+Estela+Nobre+Eldorado+Manaus',
     },
     photos: [
-      { url: '/fotos/gastronomia/beco-restaurante.png', alt: 'Beco Restaurante — delivery no Eldorado' },
+      { url: '/fotos/gastronomia/beco-restaurante.png', alt: 'O Beco Bar — comida caseira no Conjunto Eldorado' },
     ],
-    tags: ['Delivery', 'Almoço & Jantar'],
-    pt: { name: 'Beco Restaurante', tagline: 'Delivery de qualidade no Eldorado', description: 'Restaurante com opção de delivery no bairro Eldorado. Pratos saborosos e porções generosas com entrega rápida.' },
-    en: { name: 'Beco Restaurant', tagline: 'Quality delivery in Eldorado', description: 'Restaurant with delivery option in Eldorado neighborhood. Tasty dishes and generous portions with fast delivery.' },
-    es: { name: 'Beco Restaurante', tagline: 'Delivery de calidad en Eldorado', description: 'Restaurante con opción de delivery en el barrio Eldorado. Platos sabrosos y porciones generosas con entrega rápida.' },
+    tags: ['Almoço', 'Comida Caseira', 'Conjunto Eldorado'],
+    pt: { name: 'O Beco Bar', tagline: 'Comida caseira, sabor de verdade — Conjunto Eldorado', description: 'Restaurante com prato feito diário no Conjunto Eldorado. Cardápio rotativo com pratos como cozidão de carne e frango frito, sempre com arroz, feijão, salada e farofa. Ambiente agradável, atendimento acolhedor. Rua Estela Nobre, 48.', tip: 'Chama a família e os amigos — o almoço aqui tem gosto de casa!' },
+    en: { name: 'O Beco Bar', tagline: 'Home-cooked food, real flavor — Conjunto Eldorado', description: 'Restaurant with daily lunch specials in Conjunto Eldorado. Rotating menu with dishes like beef stew and fried chicken, always with rice, beans, salad and farofa. Pleasant atmosphere. Rua Estela Nobre, 48.' },
+    es: { name: 'O Beco Bar', tagline: 'Comida casera, sabor de verdad — Conjunto Eldorado', description: 'Restaurante con plato del día en el Conjunto Eldorado. Menú rotativo con platos como cocido de carne y pollo frito, siempre con arroz, frijoles, ensalada y farofa. Rua Estela Nobre, 48.' },
   },
 ];
 
