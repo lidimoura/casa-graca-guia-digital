@@ -120,23 +120,42 @@ export function GuiaWidget({ lang, darkMode }: GuiaWidgetProps) {
       const data = await res.json().catch(() => ({}));
 
       if (!res.ok) {
-        // Surface the real error message from the API
-        const hint    = data?.hint    || '';
-        const errMsg  = data?.error   || '';
-        const geminiMsg = data?.geminiMessage || '';
-        const preview = data?.keyPreview || '';
+        const hint       = data?.hint       || '';
+        const errMsg     = data?.error      || '';
+        const errorType  = data?.errorType  || '';
+        const preview    = data?.keyPreview || '';
 
-        // Build user-friendly message
+        // Mensagens amigáveis por tipo de erro e idioma
+        const isEN = lang === 'en';
+        const isES = lang === 'es';
+
         let friendlyMsg = '';
 
         if (res.status === 501) {
-          // Key missing or wrong format
-          friendlyMsg = `⚠️ **Chave da guIA inválida.** ${hint || errMsg}${preview ? `\n\n🔑 Início da chave atual: \`${preview}\`` : ''}\n\nEnquanto isso, fale diretamente:`;
-        } else if (res.status === 502) {
-          // Gemini returned error
-          friendlyMsg = `⚠️ **Erro na API Gemini** (${res.status}).\n${geminiMsg || errMsg}\n\nEnquanto isso, fale diretamente:`;
+          // Chave ausente ou formato errado
+          friendlyMsg = isEN
+            ? `⚠️ **guIA is being set up.** ${hint || errMsg}${preview ? `\n\n🔑 Key preview: \`${preview}\`` : ''}\n\nMeanwhile, contact us directly:`
+            : isES
+            ? `⚠️ **guIA está en configuración.** ${hint || errMsg}\n\nMientras tanto, contáctanos directamente:`
+            : `⚠️ **guIA está sendo configurada.** ${hint || errMsg}${preview ? `\n\n🔑 Início da chave: \`${preview}\`` : ''}\n\nEnquanto isso, fale diretamente:`;
+        } else if (errorType === 'quota_exceeded') {
+          friendlyMsg = isEN
+            ? `🌿 **guIA is resting for a moment** — our AI limit was reached for today.\n\nNo worries! Talk directly with us:`
+            : isES
+            ? `🌿 **guIA está descansando un momento** — alcanzamos el límite diario de IA.\n\n¡No te preocupes! Habla directamente con nosotros:`
+            : `🌿 **guIA está descansando por um momento** — atingimos o limite diário de mensagens de IA.\n\nSem problemas! Fale diretamente com a gente:`;
+        } else if (errorType === 'invalid_key') {
+          friendlyMsg = isEN
+            ? `⚠️ **guIA configuration issue.** Please contact the host.\n\nMeanwhile:`
+            : isES
+            ? `⚠️ **Problema de configuración de guIA.** Contacta al anfitrión.\n\nMientras tanto:`
+            : `⚠️ **Problema na configuração da guIA.** Por favor, avise a anfitriã.\n\nEnquanto isso:`;
         } else {
-          friendlyMsg = `⚠️ **Erro ${res.status}**: ${errMsg || 'Tente novamente.'}\n\nEnquanto isso, fale diretamente:`;
+          friendlyMsg = isEN
+            ? `⚠️ **guIA is temporarily unavailable.** Try again in a moment.\n\nMeanwhile, contact us directly:`
+            : isES
+            ? `⚠️ **guIA no está disponible temporalmente.** Intenta de nuevo en un momento.\n\nMientras tanto, contáctanos:`
+            : `⚠️ **guIA indisponível no momento.** Tente novamente em instantes.\n\nEnquanto isso, fale diretamente:`;
         }
 
         setApiError(friendlyMsg);

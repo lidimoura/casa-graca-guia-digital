@@ -96,12 +96,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const data = await geminiRes.json();
 
     if (!geminiRes.ok) {
-      console.error('Gemini error:', JSON.stringify(data));
-      return res.status(502).json({
-        error: 'Erro na API Gemini',
-        geminiStatus: geminiRes.status,
-        geminiMessage: data?.error?.message || JSON.stringify(data),
-      });
+      const errMsg = data?.error?.message || '';
+      console.error('Gemini error:', geminiRes.status, errMsg);
+
+      // Classifica o tipo de erro — nunca envia mensagem técnica da API pro cliente
+      let errorType = 'gemini_error';
+      if (geminiRes.status === 429 || errMsg.includes('quota') || errMsg.includes('RESOURCE_EXHAUSTED')) {
+        errorType = 'quota_exceeded';
+      } else if (errMsg.includes('not found') || errMsg.includes('not supported')) {
+        errorType = 'model_not_found';
+      } else if (geminiRes.status === 401 || errMsg.includes('API_KEY') || errMsg.includes('invalid')) {
+        errorType = 'invalid_key';
+      }
+
+      return res.status(502).json({ error: 'Erro na API Gemini', errorType });
     }
 
     const response = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Não consegui gerar uma resposta.';
