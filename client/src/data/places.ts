@@ -134,15 +134,16 @@ export const food: Place[] = [
     emoji: '🛵',
     category: 'food',
     contact: {
+      whatsapp: '5592995095865',
       maps: 'https://www.google.com/maps/search/Amazonas+Caf%C3%A9+Regional+Manaus',
     },
     photos: [
-      { url: '/fotos/gastronomia/Amazonas-cafe-regional-entrega.jpeg', alt: 'Amazonas Café Regional — delivery' },
+      { url: '/fotos/gastronomia/Amazonas-cafe-regional-entrega.jpeg', alt: 'Amazonas Café Regional — delivery no Eldorado' },
     ],
-    tags: ['Delivery', 'Café', 'Regional'],
-    pt: { name: 'Amazonas Café Regional', tagline: 'Delivery de café regional em Manaus', description: 'Café regional amazônico com opção de entrega. Sabores únicos do Norte direto na sua porta — café, tapioca, cuscuz e produtos típicos da Amazônia.' },
-    en: { name: 'Amazonas Regional Café', tagline: 'Regional coffee delivery in Manaus', description: 'Amazonian regional coffee with delivery option. Unique Northern flavors at your door — coffee, tapioca, cuscuz and typical Amazonian products.' },
-    es: { name: 'Amazonas Café Regional', tagline: 'Delivery de café regional en Manaos', description: 'Café regional amazónico con opción de entrega. Sabores únicos del Norte a tu puerta — café, tapioca, cuscuz y productos típicos de la Amazonia.' },
+    tags: ['Delivery', 'Taxa R$2 Eldorado', 'Café', 'Regional'],
+    pt: { name: 'Amazonas Café Regional', tagline: 'Delivery de café regional — R$2 no Eldorado', description: 'Café regional amazônico com delivery por apenas R$2 no Eldorado. Peça pelo WhatsApp — café, tapioca, cuscuz e produtos típicos da Amazônia direto na porta da casa.', tip: 'Taxa de entrega: R$2 no Conjunto Eldorado. Peça pelo WhatsApp!' },
+    en: { name: 'Amazonas Regional Café', tagline: 'Regional coffee delivery — R$2 in Eldorado', description: 'Amazonian regional coffee with delivery for only R$2 in Eldorado. Order via WhatsApp — coffee, tapioca, cuscuz and typical Amazonian products at your door.' },
+    es: { name: 'Amazonas Café Regional', tagline: 'Delivery de café regional — R$2 en Eldorado', description: 'Café regional amazónico con delivery por solo R$2 en Eldorado. Pide por WhatsApp — café, tapioca, cuscuz y productos típicos de la Amazonia.' },
   },
   {
     id: 'beco-restaurante',
@@ -390,11 +391,7 @@ export const communityTourism: Place[] = [
       maps: 'https://www.google.com/maps/place/Reserva+de+Desenvolvimento+Sustent%C3%A1vel+do+Tup%C3%A9/@-3.1119,-60.4264,12z',
     },
     photos: [
-      {
-        url: '/fotos/wikimedia/encontro-aguas.jpg',
-        alt: 'Rio Negro — acesso à RDS do Tupé de barco',
-        credit: 'Wikimedia Commons (CC BY-SA)',
-      },
+      { url: '/fotos/turismo/rds-tupe.png', alt: 'RDS Tupé — comunidades ribeirinhas no Rio Negro' },
     ],
     tags: ['Barco ~40–60min', 'R$30–50 barco', 'Guia Local', '♻️ Sustentável'],
     pt: {
@@ -426,11 +423,7 @@ export const communityTourism: Place[] = [
       site: 'https://www.braziliando.com',
     },
     photos: [
-      {
-        url: '/fotos/wikimedia/ponta-negra.jpg',
-        alt: 'Comunidade do Tumbira — margem do Rio Negro',
-        credit: 'Wikimedia Commons (CC BY-SA)',
-      },
+      { url: '/fotos/turismo/comunidade-tumbira.png', alt: 'Comunidade do Tumbira — imersão ribeirinha no Rio Negro' },
     ],
     tags: ['Barco ~1,5h', 'Imersão 2–4 noites', '100% Comunitário'],
     pt: {
@@ -461,11 +454,8 @@ export const communityTourism: Place[] = [
       maps: 'https://www.google.com/maps/place/Novo+Air%C3%A3o,+AM/@-2.6241,-60.9439,12z',
     },
     photos: [
-      {
-        url: '/fotos/wikimedia/boto.jpg',
-        alt: 'Boto-cor-de-rosa no Rio Negro — Novo Airão',
-        credit: 'Wikimedia Commons (CC BY-SA)',
-      },
+      { url: '/fotos/turismo/novo-airao.png',   alt: 'Novo Airão — Rio Negro e flutuante dos botos' },
+      { url: '/fotos/turismo/anavilhanas.png',   alt: 'Parque Nacional de Anavilhanas — arquipélago fluvial' },
     ],
     tags: ['~3h carro/ônibus', 'R$60–100 botos', 'Anavilhanas', 'Full Day'],
     pt: {
@@ -496,11 +486,7 @@ export const communityTourism: Place[] = [
       maps: 'https://www.google.com/maps/place/Parque+Ecol%C3%B3gico+Lago+do+Janauari/@-3.2830,-60.1200,13z',
     },
     photos: [
-      {
-        url: '/fotos/wikimedia/victoria.jpg',
-        alt: 'Vitória-régia gigante no Lago Janauari — Iranduba, AM',
-        credit: 'Wikimedia Commons (CC BY-SA)',
-      },
+      { url: '/fotos/turismo/lago-janauari.png', alt: 'Lago Janauari — vitórias-régias e igapó amazônico' },
     ],
     tags: ['Barco ~30–45min', 'R$150–300', 'Vitória-Régia', 'Flutuante'],
     pt: {
@@ -532,11 +518,7 @@ export const communityTourism: Place[] = [
       maps: 'https://www.google.com/maps/place/Museu+do+%C3%8Dndio+de+Manaus/@-3.1185,-60.0190,17z',
     },
     photos: [
-      {
-        url: '/fotos/wikimedia/museu-indio.jpg',
-        alt: 'Museu do Índio de Manaus — acervo Saleiano com 3.000 peças',
-        credit: 'Wikimedia Commons (CC BY-SA)',
-      },
+      { url: '/fotos/turismo/museu-do-indio.png', alt: 'Museu do Índio de Manaus — acervo com 3.000 peças' },
     ],
     tags: ['~10 min', 'R$10 inteira', 'Seg–Sáb', 'Salesianos'],
     pt: {
@@ -568,11 +550,7 @@ export const communityTourism: Place[] = [
       maps: 'https://www.google.com/maps/search/Comunidade+Sater%C3%A9+Maw%C3%A9+Manaus',
     },
     photos: [
-      {
-        url: '/fotos/wikimedia/satere-mawe.jpg',
-        alt: 'Povo Sateré-Mawé — artesanato e cultura indígena',
-        credit: 'Wikimedia Commons (CC BY-SA)',
-      },
+      { url: '/fotos/turismo/comunidade-satare-mawe.png', alt: 'Comunidade Sateré-Mawé — cultura indígena amazônica' },
     ],
     tags: ['Agendamento Obrigatório', 'Via FEPIAM', 'R$200–500', 'Cultural'],
     pt: {
@@ -606,9 +584,8 @@ export const transport: Place[] = [
       site: 'https://www.uber.com/br/pt-br/',
     },
     photos: [{
-      url: '/fotos/wikimedia/encontro-aguas.jpg',
-      alt: 'Transporte por app em Manaus — Uber e 99 Pop',
-      credit: 'Wikimedia Commons',
+      url: '/fotos/turismo/uber-99.png',
+      alt: 'Uber e 99 Pop — apps de transporte em Manaus',
     }],
     tags: ['24h', 'App'],
     pt: { name: 'Uber / 99 Pop', tagline: 'O jeito mais prático de se locomover', description: 'Apps de transporte disponíveis em Manaus. Uber e 99 Pop funcionam 24h e são a forma mais segura e prática de se locomover. Preços acessíveis — a maioria dos destinos na zona sul custa R$10–25.' },
@@ -623,9 +600,8 @@ export const transport: Place[] = [
       maps: 'https://www.google.com/maps/place/Aeroporto+Internacional+Eduardo+Gomes/@-3.0386,-60.0497,14z',
     },
     photos: [{
-      url: '/fotos/wikimedia/teatro.jpg',
+      url: '/fotos/turismo/aeroporto-manaus.png',
       alt: 'Aeroporto Internacional Eduardo Gomes — Manaus',
-      credit: 'Wikimedia Commons',
     }],
     tags: ['~25 min de Uber', '~R$35–50'],
     pt: { name: 'Aeroporto Eduardo Gomes', tagline: 'Internacional — 25 min daqui', description: 'O Aeroporto Internacional de Manaus fica a ~25 minutos da Casa da Graça de Uber (custo estimado R$35–50). Terminal moderno com lojas, restaurantes e câmbio.' },
@@ -638,9 +614,8 @@ export const transport: Place[] = [
     category: 'transport',
     contact: {},
     photos: [{
-      url: '/fotos/wikimedia/ponta-negra.jpg',
-      alt: 'Aluguel de carro para explorar a Amazônia',
-      credit: 'Wikimedia Commons',
+      url: '/fotos/turismo/aluguel-carro.png',
+      alt: 'Aluguel de carro — explore a Amazônia com liberdade',
     }],
     tags: ['No Aeroporto', 'Localiza / Movida'],
     pt: { name: 'Aluguel de Carro', tagline: 'Explore a região com liberdade', description: 'Para explorar Novo Airão, Rio Negro e arredores, alugar um carro é a melhor opção. Localiza, Movida e Unidas têm balcões no Aeroporto Eduardo Gomes com boas opções.' },
