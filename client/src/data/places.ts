@@ -49,9 +49,8 @@ export const pharmacies: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Drogasil_logo.png',
-        alt: 'Drogasil — farmácia 24h',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/farmacia/drogasil-djalma.png',
+        alt: 'Drogasil — farmácia 24h no Eldorado',
       },
     ],
     tags: ['24h', 'Delivery'],
@@ -68,9 +67,8 @@ export const pharmacies: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG',
-        alt: 'Farmácia Santo Remédio — farmácia local de confiança',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/farmacia/drogaria-santo-remedio.png',
+        alt: 'Drogaria Santo Remédio — farmácia local de confiança',
       },
     ],
     tags: ['Delivery', 'Manipulação'],
@@ -90,21 +88,8 @@ export const food: Place[] = [
       maps: 'https://www.google.com/maps/search/Pra%C3%A7a+do+Caranguejo+Manaus',
     },
     photos: [
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Tacac%C3%A1_de_Manaus.jpg/500px-Tacac%C3%A1_de_Manaus.jpg',
-        alt: 'Tacacá — prato típico de Manaus',
-        credit: 'Wikimedia Commons',
-      },
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Tacaca.png/800px-Tacaca.png',
-        alt: 'Tacacá amazônico',
-        credit: 'Wikimedia Commons',
-      },
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG',
-        alt: 'Café regional na Praça do Caranguejo',
-        credit: 'Wikimedia Commons',
-      },
+      { url: '/fotos/gastronomia/praca-caranguejo-espetos.jpg',              alt: 'Praça do Caranguejo — espetos e assados' },
+      { url: '/fotos/gastronomia/praca-caranguejo-papagaios-steakgrill.jpg', alt: 'Papagaios Steak Grill na Praça do Caranguejo' },
     ],
     tags: ['Almoço & Jantar', 'Ao Ar Livre', '🗓️ Feira Qua'],
     pt: { name: 'Praça do Caranguejo', tagline: 'O coração gastronômico do Eldorado', description: 'Praça de alimentação a céu aberto com especialidades amazônicas — caranguejo, caldeirada, tacacá e muito mais. Às quartas-feiras vira palco de uma feira regional imperdível.', tip: 'Às quartas-feiras tem feira com produtos regionais incríveis!' },
@@ -119,11 +104,10 @@ export const food: Place[] = [
       maps: 'https://www.google.com/maps/search/Assados+Hango+Manaus',
     },
     photos: [
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Churrasco_brasileiro.jpg/800px-Churrasco_brasileiro.jpg',
-        alt: 'Assados Hango — churrasco artesanal',
-        credit: 'Wikimedia Commons',
-      },
+      { url: '/fotos/gastronomia/assados-hango-tambaqui-assado.png',        alt: 'Assados Hango — tambaqui assado' },
+      { url: '/fotos/gastronomia/assados-hango-cardapio-proteinas.png',     alt: 'Assados Hango — cardápio de proteínas' },
+      { url: '/fotos/gastronomia/assados-hango-prato-executivo-cardapio.png', alt: 'Assados Hango — prato executivo' },
+      { url: '/fotos/wikimedia/churrasco.jpg',                              alt: 'Churrasco artesanal' },
     ],
     tags: ['Churrasco', 'Almoço & Jantar'],
     pt: { name: 'Assados Hango', tagline: 'Churrasco artesanal no Eldorado', description: 'Churrasqueria artesanal com cortes selecionados, ambiente agradável e preços justos. Um clássico do bairro Eldorado.' },
@@ -138,21 +122,42 @@ export const food: Place[] = [
       maps: 'https://www.google.com/maps/search/Caf%C3%A9+Regional+Manaus+Eldorado',
     },
     photos: [
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/800px-A_small_cup_of_coffee.JPG',
-        alt: 'Café regional amazônico',
-        credit: 'Wikimedia Commons',
-      },
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Tacac%C3%A1_de_Manaus.jpg/500px-Tacac%C3%A1_de_Manaus.jpg',
-        alt: 'Culinária regional amazona — experiência gastronômica',
-        credit: 'Wikimedia Commons',
-      },
+      { url: '/fotos/gastronomia/banca-cafe-regional.jpg', alt: 'Banca de Café Regional — café amazônico fresquinho' },
     ],
-    tags: ['Café', 'Manhã'],
+    tags: ['Café', 'Manhã', 'Presencial'],
     pt: { name: 'Banca de Café Regional', tagline: 'Café da Amazônia todo dia', description: 'Banca especializada em café regional amazônico, cuscuz, tapioca e lanches típicos do Norte. O melhor começo de manhã em Manaus.' },
     en: { name: 'Regional Coffee Stand', tagline: 'Amazonian coffee every day', description: 'Stall specialized in Amazonian regional coffee, cuscuz, tapioca and typical Northern snacks.' },
     es: { name: 'Puesto de Café Regional', tagline: 'Café amazónico todos los días', description: 'Puesto especializado en café regional amazónico, cuscuz, tapioca y aperitivos típicos del Norte.' },
+  },
+  {
+    id: 'amazonas-cafe-delivery',
+    emoji: '🛵',
+    category: 'food',
+    contact: {
+      maps: 'https://www.google.com/maps/search/Amazonas+Caf%C3%A9+Regional+Manaus',
+    },
+    photos: [
+      { url: '/fotos/gastronomia/Amazonas-cafe-regional-entrega.jpeg', alt: 'Amazonas Café Regional — delivery' },
+    ],
+    tags: ['Delivery', 'Café', 'Regional'],
+    pt: { name: 'Amazonas Café Regional', tagline: 'Delivery de café regional em Manaus', description: 'Café regional amazônico com opção de entrega. Sabores únicos do Norte direto na sua porta — café, tapioca, cuscuz e produtos típicos da Amazônia.' },
+    en: { name: 'Amazonas Regional Café', tagline: 'Regional coffee delivery in Manaus', description: 'Amazonian regional coffee with delivery option. Unique Northern flavors at your door — coffee, tapioca, cuscuz and typical Amazonian products.' },
+    es: { name: 'Amazonas Café Regional', tagline: 'Delivery de café regional en Manaos', description: 'Café regional amazónico con opción de entrega. Sabores únicos del Norte a tu puerta — café, tapioca, cuscuz y productos típicos de la Amazonia.' },
+  },
+  {
+    id: 'beco-restaurante',
+    emoji: '🍽️',
+    category: 'food',
+    contact: {
+      maps: 'https://www.google.com/maps/search/Beco+Restaurante+Manaus',
+    },
+    photos: [
+      { url: '/fotos/gastronomia/beco-restaurante.png', alt: 'Beco Restaurante — delivery no Eldorado' },
+    ],
+    tags: ['Delivery', 'Almoço & Jantar'],
+    pt: { name: 'Beco Restaurante', tagline: 'Delivery de qualidade no Eldorado', description: 'Restaurante com opção de delivery no bairro Eldorado. Pratos saborosos e porções generosas com entrega rápida.' },
+    en: { name: 'Beco Restaurant', tagline: 'Quality delivery in Eldorado', description: 'Restaurant with delivery option in Eldorado neighborhood. Tasty dishes and generous portions with fast delivery.' },
+    es: { name: 'Beco Restaurante', tagline: 'Delivery de calidad en Eldorado', description: 'Restaurante con opción de delivery en el barrio Eldorado. Platos sabrosos y porciones generosas con entrega rápida.' },
   },
 ];
 
