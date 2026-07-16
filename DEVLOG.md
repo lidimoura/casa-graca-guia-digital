@@ -22,6 +22,59 @@ O Guia Digital da Casa da Graça é uma SPA (Single Page Application) trilíngue
 
 ---
 
+### [v1.4.0] — 2026-07-16 | Fotos Completas — Zero Placeholders
+**Responsável:** Hub Encontro d'Água (Antigravity AI)
+**Commits:** `80f6324` → `de16eb4`
+
+#### 📸 Estratégia Final de Fotos — Assets Locais
+Problema: Wikimedia Commons bloqueava hotlinking via `thumb/` URLs com erro 400/429 de rate limit.
+Solução: **Download das imagens + servir como assets estáticos** em `/client/public/fotos/wikimedia/`
+
+| Arquivo | Origem | Tamanho | Cards |
+|---|---|---|---|
+| `teatro.jpg` | Wikimedia Commons (CC BY-SA) | 708 KB | Teatro Amazonas, Aeroporto |
+| `encontro-aguas.jpg` | Wikimedia Commons (CC BY-SA) | 668 KB | Encontro das Águas, RDS Tupé, Uber |
+| `ponta-negra.jpg` | Wikimedia Commons (CC BY-SA) | 1,2 MB | Ponta Negra, Tumbira, Aluguel Carro |
+| `mercado.jpg` | Wikimedia Commons (CC BY-SA) | 339 KB | Mercado Adolpho Lisboa |
+| `churrasco.jpg` | Wikimedia Commons (CC BY-SA) | 1,0 MB | Assados Hango |
+| `boto.jpg` | Gerada por IA (Gemini Imagen) | 810 KB | Novo Airão — Botos |
+| `victoria.jpg` | Gerada por IA (Gemini Imagen) | 1,0 MB | Lago Janauari — Vitórias-Régias |
+| `satere-mawe.jpg` | Gerada por IA (Gemini Imagen) | 1,2 MB | Comunidade Sateré-Mawé |
+| `musa.jpg` | Gerada por IA (Gemini Imagen) | 1,1 MB | MUSA — Museu da Amazônia |
+| `museu-indio.jpg` | Gerada por IA (Gemini Imagen) | 840 KB | Museu do Índio |
+
+- ✅ Todos os 3 cards de Transporte (Uber, Aeroporto, Aluguel Carro) — sem `isPlaceholder`
+- ✅ Todos os cards de Atrações Turísticas têm foto real ou representativa
+- ✅ Todos os cards de Turismo Comunitário têm foto
+- ⏳ **Pendente (fotos da cliente):** Praça do Caranguejo, Banca de Café Regional, fotos internas da casa
+
+#### ⚠️ Avisos npm no Vercel (não bloqueantes)
+- `hast@1.0.0 deprecated` → dependência transitiva do `streamdown`; não afeta o build
+- `recharts@2.x deprecated` → v3 tem breaking changes; atualização planejada para próxima sprint
+- Build continua funcional: `vite build` ✓
+
+---
+
+### [v1.3.0] — 2026-07-16 | Segurança + guIA WhatsApp + Modelo Gemini Atualizado
+**Responsável:** Hub Encontro d'Água (Antigravity AI)
+**Commits:** `dda47e1` → `9f550a5`
+
+#### 🔒 Segurança — Fix Crítico
+- Removida senha `ADMIN_PASSWORD` hardcoded do código-fonte (era visível no repositório público)
+- `api/reviews.ts`: autenticação agora 100% via variável de ambiente `ADMIN_PASSWORD` no Vercel
+- `client/src/pages/Avaliar.tsx`: formulário de login com verificação server-side — sem senha no cliente
+- GitGuardian alertou sobre commit anterior; solução: senha rotacionada + env var
+
+#### 🤖 guIA — Modelo Atualizado + Botões WhatsApp
+- **Fix do erro 502:** `gemini-1.5-flash` descontinuado na `v1beta` → substituído por `gemini-2.0-flash`
+- `api/guia-chat.ts`: `GEMINI_MODEL = 'gemini-2.0-flash'` (mais rápido, sem custo adicional)
+- `GuiaWidget.tsx`: adicionados botões de WhatsApp fixos no chat
+  - 📱 Graça: `+55 92 98255-9002` (anfitriã da casa)
+  - 📱 Lídi: `+55 41 99255-7600` (turismo comunitário)
+- Mensagens de erro da API passadas ao usuário com botões de contato de fallback
+
+---
+
 ### [v1.2.0] — 2026-07-14 | Sistema de Avaliações + Fotos Reais + guIA Fix
 **Responsável:** Hub Encontro d'Água (Antigravity AI)
 
