@@ -22,6 +22,63 @@ O Guia Digital da Casa da Graça é uma SPA (Single Page Application) trilíngue
 
 ---
 
+### [v1.5.0] — 2026-07-16 | Lightbox + Fotos Reais da Cliente + Cards de Delivery + Turismo Completo
+**Responsável:** Hub Encontro d'Água (Antigravity AI)
+**Commits:** `9c0ffda` → `999af66`
+
+#### 🔍 Lightbox — Ampliar Foto ao Clicar
+- `PlaceCard.tsx` atualizado com lightbox nativo (sem biblioteca externa)
+- Clique na foto → overlay tela cheia com `object-contain` (foto inteira, sem corte)
+- Ícone 🔍 (ZoomIn) aparece no hover sobre a foto
+- Fechar: botão ✕, tecla ESC ou clicar fora da imagem
+- Navegar: botões ← → ou teclas `ArrowLeft` / `ArrowRight`
+- Caption com nome do local, descrição da foto e contador `1 / N`
+- `document.body.overflow = 'hidden'` enquanto aberto (sem scroll de fundo)
+
+#### 🍽️ Novos Cards — Gastronomia & Delivery
+| Card | Detalhe |
+|---|---|
+| **O Beco Bar** | Nome correto; endereço: Rua Estela Nobre, 48 – Conjunto Eldorado; comida caseira com prato do dia (cozidão, frango frito + arroz/feijão/salada/farofa) |
+| **Amazonas Café Regional** | WhatsApp `(92) 99509-5865`; taxa de entrega R$2 no Eldorado; tag destacada |
+
+#### 📸 Fotos Reais da Cliente — Gastronomia
+Arquivos salvos em `/client/public/fotos/gastronomia/`:
+| Arquivo | Card |
+|---|---|
+| `praca-caranguejo-espetos.jpg` | Praça do Caranguejo |
+| `praca-caranguejo-papagaios-steakgrill.jpg` | Praça do Caranguejo (2º slide) |
+| `assados-hango-tambaqui-assado.png` | Assados Hango |
+| `assados-hango-cardapio-proteinas.png` | Assados Hango (2º slide) |
+| `assados-hango-prato-executivo-cardapio.png` | Assados Hango (3º slide) |
+| `banca-cafe-regional.jpg` | Banca de Café Regional |
+| `Amazonas-cafe-regional-entrega.jpeg` | Amazonas Café Regional (delivery) |
+| `beco-restaurante.png` | O Beco Bar |
+
+Arquivos salvos em `/client/public/fotos/farmacia/`:
+| Arquivo | Card |
+|---|---|
+| `drogasil-djalma.png` | Drogasil |
+| `drogaria-santo-remedio.png` | Drogaria Santo Remédio |
+
+#### 🗺️ Fotos de Turismo e Transporte — `/fotos/turismo/`
+Arquivos salvos em `/client/public/fotos/turismo/`:
+| Arquivo | Card | Origem |
+|---|---|---|
+| `rds-tupe.png` | RDS Tupé | Print de página pública de notícias/IG |
+| `comunidade-tumbira.png` | Comunidade Tumbira | Print de página pública de notícias/IG |
+| `novo-airao.png` | Novo Airão — Botos | Print de página pública de notícias/IG |
+| `anavilhanas.png` | Novo Airão — 2º slide (Anavilhanas) | Print de página pública de notícias/IG |
+| `lago-janauari.png` | Lago Janauari | Print de página pública de notícias/IG |
+| `museu-do-indio.png` | Museu do Índio | Print de página pública de notícias/IG |
+| `comunidade-satare-mawe.png` | Sateré-Mawé | Print de página pública de notícias/IG |
+| `uber-99.png` | Uber / 99 Pop | Print de página pública de notícias/IG |
+| `aeroporto-manaus.png` | Aeroporto Eduardo Gomes | Print de página pública de notícias/IG |
+| `aluguel-carro.png` | Aluguel de Carro | Print de página pública de notícias/IG |
+
+> ⚠️ **Nota de direitos autorais:** Imagens em `/fotos/turismo/` são prints de páginas públicas de notícias ou Instagram. Uso em guia privado sem fins comerciais diretos — risco baixo. Substituir progressivamente por fotos próprias (tiradas nos locais) ou por imagens Wikimedia Commons (CC) conforme disponibilidade.
+
+---
+
 ### [v1.4.0] — 2026-07-16 | Fotos Completas — Zero Placeholders
 **Responsável:** Hub Encontro d'Água (Antigravity AI)
 **Commits:** `80f6324` → `de16eb4`
