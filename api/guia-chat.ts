@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 const GEMINI_API_KEY = (process.env.GEMINI_API_KEY || '').trim();
-const GEMINI_MODEL   = 'gemini-1.5-flash';
+const GEMINI_MODEL   = 'gemini-2.0-flash';
 
 const SYSTEM_PROMPT = `Você é a **guIA** — a concierge digital da Casa da Graça, uma acomodação no bairro Eldorado, Manaus, Amazonas, Brasil. Você foi criada pelo Hub Encontro d'Água.
 
