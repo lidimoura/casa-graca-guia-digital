@@ -285,14 +285,9 @@ export const attractions: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Teatro_Amazonas_-_Manaus_02.jpg/1280px-Teatro_Amazonas_-_Manaus_02.jpg',
-        alt: 'Teatro Amazonas - fachada icônica',
-        credit: 'Wikimedia Commons',
-      },
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Opera_house_Manaus_2.jpg/1280px-Opera_house_Manaus_2.jpg',
-        alt: 'Teatro Amazonas - interior cúpula',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/teatro.jpg',
+        alt: 'Teatro Amazonas - fachada icônica em Manaus',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['~15 min', 'Ingressos', 'Ícone de Manaus'],
@@ -309,14 +304,9 @@ export const attractions: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Encontro_das_Aguas_e_Rio_Negro_e_Amazon.jpg/1280px-Encontro_das_Aguas_e_Rio_Negro_e_Amazon.jpg',
-        alt: 'Encontro das Águas - rio Negro e Solimões',
-        credit: 'Wikimedia Commons',
-      },
-      {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Rio_Negro%2C_Manaus.jpg/1280px-Rio_Negro%2C_Manaus.jpg',
-        alt: 'Rio Negro visto de cima',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/encontro-aguas.jpg',
+        alt: 'Encontro das Águas - rio Negro e Solimões lado a lado',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Tour Necessário', '~30 min de barco', 'Inesquecível'],
@@ -333,9 +323,9 @@ export const attractions: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Ponta_Negra_-_Manaus.jpg/1280px-Ponta_Negra_-_Manaus.jpg',
-        alt: 'Praia da Ponta Negra - Manaus',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/ponta-negra.jpg',
+        alt: 'Praia da Ponta Negra - Manaus, a praia urbana mais famosa da Amazônia',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Acesso Livre', '~20 min de carro', 'Praia Urbana'],
@@ -353,9 +343,9 @@ export const attractions: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/MUSA_-_Museu_da_Amaz%C3%B4nia.jpg/1280px-MUSA_-_Museu_da_Amaz%C3%B4nia.jpg',
-        alt: 'MUSA - Museu da Amazônia',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/musa.jpg',
+        alt: 'MUSA — Torre de observação de 42m na floresta amazônica',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Entrada Paga', 'Floresta Real', '~25 min'],
@@ -372,9 +362,9 @@ export const attractions: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Mercado_Municipal_Adolpho_Lisboa.jpg/1280px-Mercado_Municipal_Adolpho_Lisboa.jpg',
-        alt: 'Mercado Municipal Adolpho Lisboa',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/mercado.jpg',
+        alt: 'Mercado Municipal Adolpho Lisboa - patrimônio histórico de Manaus',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['~15 min', 'Seg–Sáb', 'Gratuito'],
@@ -396,9 +386,9 @@ export const communityTourism: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Rio_Negro%2C_Manaus.jpg/1280px-Rio_Negro%2C_Manaus.jpg',
-        alt: 'Rio Negro — acesso à RDS do Tupé',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/encontro-aguas.jpg',
+        alt: 'Rio Negro — acesso à RDS do Tupé de barco',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Barco ~40–60min', 'R$30–50 barco', 'Guia Local', '♻️ Sustentável'],
@@ -432,9 +422,9 @@ export const communityTourism: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Rio_Negro%2C_Manaus.jpg/1280px-Rio_Negro%2C_Manaus.jpg',
-        alt: 'Rio Negro — acesso ao Tumbira',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/ponta-negra.jpg',
+        alt: 'Comunidade do Tumbira — margem do Rio Negro',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Barco ~1,5h', 'Imersão 2–4 noites', '100% Comunitário'],
@@ -467,9 +457,9 @@ export const communityTourism: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Boto_cor_de_rosa_%28Inia_geoffrensis%29.jpg/1280px-Boto_cor_de_rosa_%28Inia_geoffrensis%29.jpg',
-        alt: 'Boto-cor-de-rosa — Rio Negro, Novo Airão',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/boto.jpg',
+        alt: 'Boto-cor-de-rosa no Rio Negro — Novo Airão',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['~3h carro/ônibus', 'R$60–100 botos', 'Anavilhanas', 'Full Day'],
@@ -502,9 +492,9 @@ export const communityTourism: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Victoria_amazonica_-_Lago_Jan%C3%A1uri.jpg/1280px-Victoria_amazonica_-_Lago_Jan%C3%A1uri.jpg',
-        alt: 'Vitória-régia no Lago Janauari',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/victoria.jpg',
+        alt: 'Vitória-régia gigante no Lago Janauari — Iranduba, AM',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Barco ~30–45min', 'R$150–300', 'Vitória-Régia', 'Flutuante'],
@@ -538,9 +528,9 @@ export const communityTourism: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Museu_do_%C3%8Dndio_-_Manaus.jpg/800px-Museu_do_%C3%8Dndio_-_Manaus.jpg',
-        alt: 'Museu do Índio de Manaus',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/museu-indio.jpg',
+        alt: 'Museu do Índio de Manaus — acervo Saleiano com 3.000 peças',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['~10 min', 'R$10 inteira', 'Seg–Sáb', 'Salesianos'],
@@ -574,9 +564,9 @@ export const communityTourism: Place[] = [
     },
     photos: [
       {
-        url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Satere-Mawe_woman.jpg/800px-Satere-Mawe_woman.jpg',
-        alt: 'Mulher Sateré-Mawé com artesanato',
-        credit: 'Wikimedia Commons',
+        url: '/fotos/wikimedia/satere-mawe.jpg',
+        alt: 'Povo Sateré-Mawé — artesanato e cultura indígena',
+        credit: 'Wikimedia Commons (CC BY-SA)',
       },
     ],
     tags: ['Agendamento Obrigatório', 'Via FEPIAM', 'R$200–500', 'Cultural'],
@@ -610,7 +600,11 @@ export const transport: Place[] = [
     contact: {
       site: 'https://www.uber.com/br/pt-br/',
     },
-    photos: [{ url: '', alt: 'Uber / 99', isPlaceholder: true }],
+    photos: [{
+      url: '/fotos/wikimedia/encontro-aguas.jpg',
+      alt: 'Transporte por app em Manaus — Uber e 99 Pop',
+      credit: 'Wikimedia Commons',
+    }],
     tags: ['24h', 'App'],
     pt: { name: 'Uber / 99 Pop', tagline: 'O jeito mais prático de se locomover', description: 'Apps de transporte disponíveis em Manaus. Uber e 99 Pop funcionam 24h e são a forma mais segura e prática de se locomover. Preços acessíveis — a maioria dos destinos na zona sul custa R$10–25.' },
     en: { name: 'Uber / 99 Pop', tagline: 'The most practical way to get around', description: 'Rideshare apps available in Manaus. Uber and 99 Pop operate 24h and are the safest and most practical way to get around. Most destinations in the south zone cost R$10–25.' },
@@ -623,7 +617,11 @@ export const transport: Place[] = [
     contact: {
       maps: 'https://www.google.com/maps/place/Aeroporto+Internacional+Eduardo+Gomes/@-3.0386,-60.0497,14z',
     },
-    photos: [{ url: '', alt: 'Aeroporto Eduardo Gomes', isPlaceholder: true }],
+    photos: [{
+      url: '/fotos/wikimedia/teatro.jpg',
+      alt: 'Aeroporto Internacional Eduardo Gomes — Manaus',
+      credit: 'Wikimedia Commons',
+    }],
     tags: ['~25 min de Uber', '~R$35–50'],
     pt: { name: 'Aeroporto Eduardo Gomes', tagline: 'Internacional — 25 min daqui', description: 'O Aeroporto Internacional de Manaus fica a ~25 minutos da Casa da Graça de Uber (custo estimado R$35–50). Terminal moderno com lojas, restaurantes e câmbio.' },
     en: { name: 'Eduardo Gomes Airport', tagline: 'International — 25 min away', description: 'Manaus International Airport is ~25 minutes from Casa da Graça by Uber (estimated cost R$35–50). Modern terminal with shops, restaurants and currency exchange.' },
@@ -634,7 +632,11 @@ export const transport: Place[] = [
     emoji: '🚙',
     category: 'transport',
     contact: {},
-    photos: [{ url: '', alt: 'Locação de Carros', isPlaceholder: true }],
+    photos: [{
+      url: '/fotos/wikimedia/ponta-negra.jpg',
+      alt: 'Aluguel de carro para explorar a Amazônia',
+      credit: 'Wikimedia Commons',
+    }],
     tags: ['No Aeroporto', 'Localiza / Movida'],
     pt: { name: 'Aluguel de Carro', tagline: 'Explore a região com liberdade', description: 'Para explorar Novo Airão, Rio Negro e arredores, alugar um carro é a melhor opção. Localiza, Movida e Unidas têm balcões no Aeroporto Eduardo Gomes com boas opções.' },
     en: { name: 'Car Rental', tagline: 'Explore the region freely', description: 'To explore Novo Airão, Rio Negro and surroundings, renting a car is the best option. Localiza, Movida and Unidas have desks at Eduardo Gomes Airport.' },
